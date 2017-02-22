@@ -1,0 +1,52 @@
+@charset "UTF-8";
+body, h1, h2, h3, h4, h5, h6, dl, dt, dd, ul, ol, li, p, input, button, textarea, article, aside, footer, header, nav, section, menu {
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+  outline: 0;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: 100%;
+  font-style: normal;
+  vertical-align: baseline; }
+
+body, button, input, select, textarea {
+  font-size: 14px;
+  font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;
+}
+
+table {
+  border-spacing: 0;
+  vertical-align: middle;
+  border-collapse: collapse; }
+
+ul, li {
+  list-style: none; }
+
+img {
+  border: 0 none;
+  vertical-align: middle; }
+
+input, textarea {
+  outline: 0;
+  resize: none; }
+input:-webkit-autofill, textarea:-webkit-autofill {
+    background-color: #fff;
+    background-image: none; }
+
+a {
+  color: #333; 
+}
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+    outline: 0; }
+.clearfix {
+  	*zoom: 1; 
+}
+.clearfix:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; 
+}
