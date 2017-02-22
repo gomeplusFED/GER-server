@@ -1,0 +1,31 @@
+{
+  "name": "ger-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gomeplusFED/GER-server.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gomeplusFED/GER-server/issues"
+  },
+  "homepage": "https://github.com/gomeplusFED/GER-server#readme",
+  "devDependencies": {
+    "express": "^4.14.1",
+    "path": "^0.12.7",
+    "lactate": "0.13.12",
+    "body-parser": "1.14.1",
+    "cookie-session": "2.0.0-alpha.1",
+    "ejs": "2.3.4",
+    "jshint": "^2.9.4"
+  }
+}
