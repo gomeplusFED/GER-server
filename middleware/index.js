@@ -25,10 +25,10 @@ module.exports = function(app) {
 
   app.set('trust proxy', 1);
 
-/*  app.use(session({
-    name: 'fewebtags',
-    secret: 'fewebtags'
-  }));*/
+  app.use(session({
+    name: 'gerServer',
+    secret: 'gerServer'
+  }));
 
  
 

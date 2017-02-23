@@ -12,7 +12,7 @@ function addRouter(path) {
   module.exports.push(require(path)(router));
 }
 
-addRouter('./login');/*
+addRouter('./login');
+addRouter('./user');/*
 addRouter('./logout');
-addRouter('./user');
 addRouter('./error');*/
