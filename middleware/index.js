@@ -9,7 +9,8 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var session = require('cookie-session');
 var lactate = require('lactate');
-//var routers = require('../routers');
+var flash = require('flashify');
+var routers = require('../routers');
 
 module.exports = function(app) {
   app.engine('html', ejs.renderFile);
@@ -24,32 +25,25 @@ module.exports = function(app) {
   app.use(bodyParser.json());
 
   app.set('trust proxy', 1);
-/*
-  app.use(session({
-    name: 'fewebtags',
-    secret: 'fewebtags'
-  }));
-*/
- 
 
-  /*app.use(function(req, res, next) {
+  app.use(session({
+    name: 'gerServer',
+    secret: 'gerServer'
+  }));
+
+  app.use(flash);
+
+  app.use(function(req, res, next) {
     res.locals.session = req.session;
     next();
-  });*/
+  });
 
 
-
-  app.get('/',function(req,res){
-
-    res.render('login'); 
-  })
-  
-
-  /*routers.forEach(function(router) {
+  routers.forEach(function(router) {
     app.use(router);
   });
-*/
-  app.use(lactate.static(path.join(__dirname, '../publics')));
+
+  app.use(lactate.static(path.join(__dirname, '../public')));
 
   app.use(function() {
     var args = arguments;
