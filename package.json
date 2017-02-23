@@ -7,7 +7,18 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pretest": "jshint -c .jshintrc public/js/modules routers test middleware",
+    "beautify": "node ./beatufyjs.js routers middleware  public/js/modules test"
+  },
+  "config": {
+    "pre-git": {
+      "pre-commit": [
+        "npm run pretest",
+        "npm run beautify",
+        "git add ."
+      ]
+    }
   },
   "repository": {
     "type": "git",
@@ -25,8 +36,12 @@
     "cookie-session": "2.0.0-alpha.1",
     "ejs": "2.3.4",
     "express": "^4.14.1",
+    "flashify": "0.1.2",
+    "js-beautify": "^1.6.11",
     "jshint": "^2.9.4",
     "lactate": "0.13.12",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pre-git": "^3.13.0",
+    "request": "^2.73.0"
   }
 }
