@@ -34,14 +34,16 @@ module.exports = function(Router){
 	}
 
 	function doLogin( req, res, name, password ){
-		if( userList[name] && userList[name][password] === password ){
+		if( userList[name] && userList[name]['password'] === password ){
 			req.session.userName = name;
 			req.session.isLogin = true;
-			req.session.character = userList[name][character];
+			req.session.character = userList[name]['character'];
+			req.flash('a', 'aaa');
+			req.flash('b', 'bbb');
+			req.flash('c', 'ccc');
 			res.redirect('/user');
 		}
 	}
-	//flashfy()
 
 
 
