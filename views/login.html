@@ -13,13 +13,17 @@
 <body>
 <div class="container">
     <form  method="post" action="login">
-    	<h1>Please sign in</h1>
+    	<h1>前端GER错误日志监控系统</h1>
     	<div class="clearfix">
     		<input type="text" placeholder="User Name"  name="userName"/>
     	</div>
     	<div class="clearfix">
     		<input type="password" placeholder="Password" name="passWord"/>
     	</div>
+        <!--错误提示信息展示-->
+        <% if(flash.errorMsg) { %>  
+            <span class="error_tips"><%= flash.errorMsg %></span>
+        <% } %> 
     	<div>
     		<button type="submit">登录</button>
     	</div>

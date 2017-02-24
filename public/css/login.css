@@ -56,7 +56,7 @@ body{
 	background: #eee;
 }
 .container{
-	width:260px;
+	width:400px;
 	margin: 100px auto;
 	border-radius:5px;
 	color:#666;
@@ -92,3 +92,4 @@ body{
     border-radius: 6px;
     margin-top:30px;
 }
+.error_tips{color:#d80a0a;}

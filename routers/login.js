@@ -15,7 +15,7 @@ module.exports = function(Router){
 		var reqBody = req.body;
 		if(reqBody.userName&&reqBody.passWord ){
 			doLogin(req, res, reqBody.userName, reqBody.passWord);
-			//res.redirect('/user');
+			res.redirect('/user');
 		}else{
 			req.session.loginError =  '账号或密码无效，请重试！';
 			res.redirect('/login');
@@ -38,10 +38,10 @@ module.exports = function(Router){
 			req.session.userName = name;
 			req.session.isLogin = true;
 			req.session.character = userList[name]['character'];
-			req.flash('a', 'aaa');
-			req.flash('b', 'bbb');
-			req.flash('c', 'ccc');
-			res.redirect('/user');
+			res.redirect('/user/list');
+		}else{
+			req.flash('errorMsg', '账号或密码无效，请重试！');
+			res.redirect('/login');
 		}
 	}
 

@@ -1,0 +1,43 @@
+@charset "UTF-8";
+input{background:none;}
+.fl{float: left;}
+.fr{float: right;}
+
+.container{width:1100px;margin:20px auto 0;}
+.content{line-height: 30px;border: 1px solid #999;padding:0 10px;}
+.container .title{font-size:18px;color:#333;font-weight:bold;height:32px;line-height:32px;padding:10px 20px;}
+.logout{font-weight:normal;height:32px;line-height:32px;cursor:pointer;}
+.left_area{width:200px;text-align:center;padding:20px 0;}
+.right_area{margin-left:200px;border-left: 1px solid #999;padding:20px;}
+
+.left_area ul{display:inline-block;width:150px;border-top:1px solid #999;}
+.left_area li{border:1px solid #999;border-top:none;}
+.right_area li{border-bottom:1px dashed #eae6e6;margin-bottom:10px;}
+.userlist .btn{width:75px;height:18px;border-radius:5px;border:1px solid #999;line-height:18px;margin-top:6px;margin-left:10px;}
+.userlist .btn.delete{background-color:#169bd5;color:#fff;border-color:#169bd5;}
+.username,
+.password,
+.domains{width:200px;border:1px solid #999;padding:4px;}
+.username,
+.password{height:20px;}
+.domains{height:80px;}
+
+
+.useradd .content_title,
+.userdetail .content_title,
+.changepass .content_title{font-size:18px;color:#333;font-weight:bold;height:32px;padding-bottom:30px;}
+
+.useradd .title,
+.userdetail .title,
+.changepass .title{border:1px solid #999;border-bottom:none;}
+.submit{padding-top:60px;}
+.submit input{margin-right:30px;height:40px;line-height:40px;width:140px;border-radius:4px;background-color:#169bd5;color:#fff;}
+
+.right_area label{width:100px;display:inline-block;}
+.userdetail .right_area li,
+.changepass .right_area li{border-bottom:none;}
+
+
+
+
+

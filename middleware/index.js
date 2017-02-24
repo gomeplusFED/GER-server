@@ -31,6 +31,10 @@ module.exports = function(app) {
     secret: 'gerServer'
   }));
 
+  /*app.use(function(){
+
+  });*/
+  
   app.use(flash);
 
   app.use(function(req, res, next) {

@@ -7,22 +7,29 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>用户列表</title>
-    <link rel="stylesheet" type="text/css" href="css/userlist.css">
+    <link rel="stylesheet" type="text/css" href="../css/public.css">
+    <link rel="stylesheet" type="text/css" href="../css/user.css">
 </head>
 
 <body>
 <div class="container">
-    <h1>GER错误监控系统 管理员界面<input type="button" value="退出"/></h1>
-    <div class="">
+    <h4 class="title clearfix">GER错误监控系统 管理员界面<input type="button" class="logout fr" value="退出"/></h4 class="clearfix">
+    <div class="content">
         <div class="left_area fl">
-            <a href="javascript:;">添加用户</a><br>
-            <a href="javascript:;">错误列表</a>
+            <ul>
+                <li><a href="/user/add">添加用户</a></li>
+                <li><a href="/error/list">错误列表</a></li>
+            </ul>
         </div>
         <div class="right_area">
-            <div class="">
+            <div class="userlist">
                 <ul>
-                    <li><span>1.用户名 user-1 创建时间:2017-02-01</span><input type="button" value="编辑"/><input type="button" value="删除"/></li>
-                    <li><span>2.用户名 user-2 创建时间:2017-02-01</span><input type="button" value="编辑"/><input type="button" value="删除"/></li>
+                    <li><span>1.用户名 user-1 创建时间:2017-02-01</span><input class="btn delete fr" type="button" value="删除"/><input class="btn edit fr" type="button" value="编辑"/></li>
+                    <li><span>2.用户名 user-2 创建时间:2017-02-01</span><input class="btn delete fr" type="button" value="删除"/><input class="btn edit fr" type="button" value="编辑"/></li>
+                    <li><span>3.用户名 user-3 创建时间:2017-02-01</span><input class="btn delete fr" type="button" value="删除"/><input class="btn edit fr" type="button" value="编辑"/></li>
+                    <li><span>4.用户名 user-4 创建时间:2017-02-01</span><input class="btn delete fr" type="button" value="删除"/><input class="btn edit fr" type="button" value="编辑"/></li>
+                    <li><span>5.用户名 user-5 创建时间:2017-02-01</span><input class="btn delete fr" type="button" value="删除"/><input class="btn edit fr" type="button" value="编辑"/></li>
+                    <li><span>6.用户名 user-6 创建时间:2017-02-01</span><input class="btn delete fr" type="button" value="删除"/><input class="btn edit fr" type="button" value="编辑"/></li>
                 </ul>                
             </div>
         </div>
