@@ -11,8 +11,7 @@ module.exports = [];
 function addRouter(path) {
   module.exports.push(require(path)(router));
 }
-
 addRouter('./login');
-addRouter('./user');/*
+addRouter('./user');
 addRouter('./logout');
-addRouter('./error');*/
+addRouter('./error');

@@ -28,19 +28,13 @@ module.exports = function(app) {
 
   app.use(session({
     name: 'gerServer',
-    secret: 'gerServer'
+    secret: 'gerServer',
+    maxAge: 24 * 60 * 60 * 1000 
   }));
 
-  /*app.use(function(){
-
-  });*/
   
   app.use(flash);
 
-  app.use(function(req, res, next) {
-    res.locals.session = req.session;
-    next();
-  });
 
 
   routers.forEach(function(router) {
@@ -48,14 +42,20 @@ module.exports = function(app) {
   });
 
   app.use(lactate.static(path.join(__dirname, '../public')));
+  
 
-  app.use(function() {
-    var args = arguments;
-    var isErr = args[0] instanceof Error;
-    if (isErr) {
-      args[2].status(500).send(args[0]);
-    } else {
-      args[2]();
-    }
-  });
+// 捕获404并定向到错误处理
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+// 生产环境下的错误处理
+// 不会向用户显示堆栈信息
+app.use(function(err, req, res, next) {
+  // 设置响应状态
+  res.status(err.status || 500);
+  // 渲染错误处理页
+  res.send(JSON.stringify(err));
+});
 };

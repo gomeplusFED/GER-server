@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pretest": "jshint -c .jshintrc public/js/modules routers test middleware",
-    "beautify": "node ./beatufyjs.js routers middleware  public/js/modules test"
+    "beautify": "node ./beatufyjs.js routers middleware  public/js/modules test",
+    "dev": "supervisor app.js"
   },
   "config": {
     "pre-git": {

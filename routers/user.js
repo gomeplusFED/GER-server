@@ -5,22 +5,14 @@
  */
 
 module.exports = function( Router ){
-
-	Router.get('/user/list', function( req, res ){
-		res.render('userlist');
+	var routers = ['/index', '/user/add', '/user/detail','/user/changepass'];
+	routers.forEach((v)=>{
+		Router.get(v, function( req, res ){
+			res.render('index',{
+				isLogin: req.session.isLogin,
+				character: req.session.character
+			});
+		});
 	});
-
-	Router.get('/user/add', function( req, res ){
-		res.render('useradd');
-	});
-
-	Router.get('/user/detail', function( req, res ){
-		res.render('userdetail');
-	});
-
-	Router.get('/user/changepass', function( req, res ){
-		res.render('changepass');
-	});
-
 	return Router;
 };
