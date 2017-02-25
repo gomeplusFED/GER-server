@@ -4,7 +4,6 @@
  * @date 2017/02/22
  */
 module.exports = function(Router){
-
 	Router.get('/login', function( req, res ){		
 		if (req.session.isLogin){
 			res.redirect('index');
