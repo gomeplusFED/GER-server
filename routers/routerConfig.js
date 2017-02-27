@@ -8,20 +8,25 @@ module.exports = function(Router){
 	var routers = {
 		error: {
 			report: {
-				router: '/report',
+				router: '/report/:page',
 				title: '用户列表',
 				type: 'get'
 			},
 			detail: {
-				router: '/report/detail',
+				router: '/report/:id/detail',
 				title: '错误详情',
 				type: 'get'
 			}
 		},
 		user:  {
 
-			index: {
+			dIndex: {
 				router: '/index',
+				title: '用户列表',
+				type: 'get'
+			},
+			index: {
+				router: '/index/:id',
 				title: '用户列表',
 				type: 'get'
 			},
@@ -31,12 +36,12 @@ module.exports = function(Router){
 				type: 'get'
 			},
 			edit: {
-				router: '/user/edit',
+				router: '/user/edit/:name',
 				title: '用户编辑',
 				type: 'get'
 			},
 			changepass: {
-				router: '/user/changepass',
+				router: '/user/changepass/:name',
 				title: '修改密码',
 				type: 'get'
 			}
@@ -52,7 +57,9 @@ module.exports = function(Router){
 				let defaultData = {
 					isLogin: req.session.isLogin,
 					character: req.session.character
-				}
+				};
+				console.log(req);
+
 				defaultData.title =  item[n].title || '';
 				let result = Object.assign(defaultData, data);
 				if ( item[n].type === 'get'){
