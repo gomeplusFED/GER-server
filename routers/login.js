@@ -6,7 +6,7 @@
 module.exports = function(Router){
 	Router.get('/login', function( req, res ){		
 		if (req.session.isLogin){
-			res.redirect('index');
+			res.redirect('/index');
 		}else{
 			res.render('login');
 		}
@@ -35,13 +35,9 @@ module.exports = function(Router){
 	    }
 	});
 
-	Router.get('/', function(req,res){
-		res.render('index',{
-			isLogin: req.session.isLogin,
-			character: req.session.character
-		});
+	Router.get('/', function( req,  res){
+	    res.redirect('/login');
 	});
-
 
 	var userList = {
 		'test' : {

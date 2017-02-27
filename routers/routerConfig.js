@@ -9,30 +9,36 @@ module.exports = function(Router){
 		error: {
 			report: {
 				router: '/report',
-				title: '错误列表'
+				title: '用户列表',
+				type: 'get'
 			},
 			detail: {
 				router: '/report/detail',
-				title: '错误详情'
+				title: '错误详情',
+				type: 'get'
 			}
 		},
 		user:  {
 
 			index: {
 				router: '/index',
-				title: '用户列表'
+				title: '用户列表',
+				type: 'get'
 			},
 			add: {
 				router: '/user/add',
-				title: '添加用户'
+				title: '添加用户',
+				type: 'get'
 			},
 			edit: {
 				router: '/user/edit',
-				title: '用户编辑'
+				title: '用户编辑',
+				type: 'get'
 			},
 			changepass: {
 				router: '/user/changepass',
-				title: '修改密码'
+				title: '修改密码',
+				type: 'get'
 			}
 		}
 	};
@@ -41,13 +47,17 @@ module.exports = function(Router){
 	for( let k in routers ){
 		item = routers[k]
 		for( let n  in item ){
-
-			Router.get(item[n].router, function(req,res){
-				res.render('index',{
+			Router[item[n].type](item[n].router, function(req,res){
+				let data = item[n].beforeRender ? item[n].beforeRender(req, res) : {};
+				let defaultData = {
 					isLogin: req.session.isLogin,
-					character: req.session.character,
-					title: item[n].title
-				});
+					character: req.session.character
+				}
+				defaultData.title =  item[n].title || '';
+				let result = Object.assign(defaultData, data);
+				if ( item[n].type === 'get'){
+					res.render('index',result);
+				}
 			});
 		}
 	}
