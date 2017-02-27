@@ -57,6 +57,6 @@ app.use(function(err, req, res, next) {
   // 设置响应状态
   res.status(err.status || 500);
   // 渲染错误处理页
-  res.send(JSON.stringify(err));
+  res.send(err.status);
 });
 };
