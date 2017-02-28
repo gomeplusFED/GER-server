@@ -47,7 +47,6 @@ module.exports = function(app) {
 
 // 捕获404并定向到错误处理
 app.use(function(req, res, next) {
-  console.log(34245353)
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -55,7 +54,7 @@ app.use(function(req, res, next) {
 // 生产环境下的错误处理
 // 不会向用户显示堆栈信息
 app.use(function(err, req, res, next) {
-  console.log(13432424)
+  console.log('error')
   // 设置响应状态
   res.status(err.status || 500);
   // 渲染错误处理页
