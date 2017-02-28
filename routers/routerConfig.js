@@ -56,11 +56,11 @@ module.exports = function(Router){
 			};
 			defaultData.title =  v.title || '';
 			let result = Object.assign(defaultData, data);
-			console.log()
 			if ( v.type === 'get'){
 				if(req.session.character === 'admin' ){
 					res.render('index',result);
 				}else{
+					result.title = '错误列表';
 					res.render('report',result);
 				}
 			}
