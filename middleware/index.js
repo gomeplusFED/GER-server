@@ -54,6 +54,7 @@ app.use(function(req, res, next) {
 // 生产环境下的错误处理
 // 不会向用户显示堆栈信息
 app.use(function(err, req, res, next) {
+  console.log('error')
   // 设置响应状态
   res.status(err.status || 500);
   // 渲染错误处理页
