@@ -8,12 +8,12 @@ input{background:none;}
 .container .title{font-size:18px;color:#333;font-weight:bold;height:32px;line-height:32px;padding:10px 20px;}
 .logout{font-weight:normal;height:32px;line-height:32px;cursor:pointer;}
 .left_area{width:200px;text-align:center;padding:20px 0;}
-.right_area{margin-left:200px;border-left: 1px solid #999;padding:20px;}
+.right_area{padding:20px;}
 
 .left_area ul{display:inline-block;width:150px;border-top:1px solid #999;}
 .left_area li{border:1px solid #999;border-top:none;}
-.right_area li{border-bottom:1px dashed #eae6e6;margin-bottom:10px;}
-.userlist .btn{width:75px;height:18px;border-radius:5px;border:1px solid #999;line-height:18px;margin-top:6px;margin-left:10px;}
+.right_area li{padding:0 20px;border-bottom:1px dashed #eae6e6;margin-bottom:10px;line-height:34px;}
+.userlist .btn{font-size:12px;/* width:75px; */padding: 4px 10px;/* height:18px; */border-radius:5px;border:1px solid #999;/* line-height:18px; */margin-top:6px;margin-left:10px;}
 .userlist .btn.delete{background-color:#169bd5;color:#fff;border-color:#169bd5;}
 .username,
 .password,
