@@ -72,4 +72,4 @@ module.exports = function(Router){
 	
 	return Router;
 
-}
+};
