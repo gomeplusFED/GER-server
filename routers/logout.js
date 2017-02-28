@@ -9,4 +9,4 @@ module.exports = function(Router){
 	    res.redirect('/login');
 	});
 	return Router;
-}
+};

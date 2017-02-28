@@ -49,10 +49,10 @@ module.exports = function(Router){
 			character: 'user'
 		}
 	
-	}
+	};
 
-	function doLogin( req, res, name, password ){
-		if( userList[name] && userList[name]['password'] === password ){
+	function doLogin( req, res, name, pwd ){
+		if( userList[name] && userList[name]['password'] === pwd ){
 			req.session.userName = name;
 			req.session.isLogin = true;
 			req.session.character = userList[name].character;
