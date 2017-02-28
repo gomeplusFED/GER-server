@@ -52,7 +52,8 @@ module.exports = function(Router){
 			let data = v.beforeRender ? v.beforeRender(req, res) : {};
 			let defaultData = {
 				isLogin: req.session.isLogin,
-				character: req.session.character
+				character: req.session.character,
+				userName: req.session.userName
 			};
 			defaultData.title =  v.title || '';
 			let result = Object.assign(defaultData, data);

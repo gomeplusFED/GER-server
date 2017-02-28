@@ -12,7 +12,8 @@
     <script type="text/javascript">
         var GLOBAL_CONFIG = {
             isLogin: <% if (isLogin) { %>true<% }else{ %>false <% }%>,
-            character: "<% if (isLogin) { %><%= character %><%}%>"
+            character: "<% if (isLogin) { %><%= character %><%}%>",
+            userName: "<% if (isLogin) { %><%= userName %><%}%>"
         }
 
     </script>
