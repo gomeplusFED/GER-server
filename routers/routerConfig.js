@@ -8,38 +8,27 @@ module.exports = function(Router){
 	let user = [
 		{
 			router: '/index',
-			title: '用户列表',
 			type: 'get'
 		},{
-			router: '/index/:id',
-			title: '用户列表',
+			router: '/user',
 			type: 'get'
 		},{
 			router: '/user/add',
-			title: '添加用户',
 			type: 'get'
 		},{
-			router: '/user/edit/:name',
-			title: '用户编辑',
+			router: '/user/edit',
 			type: 'get'
 		},{
-			router: '/user/modpwd/:name',
-			title: '修改密码',
+			router: '/user/modpwd',
 			type: 'get'
 		}
 	];
 	let report = [
 		{
-			router: '/report/:id/detail',
-			title: '错误详情',
-			type: 'get'
-		},{
-			router: '/report/:page',
-			title: '错误列表',
+			router: '/report/detail',
 			type: 'get'
 		},{
 			router: '/report',
-			title: '错误列表',
 			type: 'get'
 		}
 	];
@@ -52,17 +41,12 @@ module.exports = function(Router){
 			let data = v.beforeRender ? v.beforeRender(req, res) : {};
 			let defaultData = {
 				isLogin: req.session.isLogin,
-				character: req.session.character
+				character: req.session.character,
+				userName: req.session.userName
 			};
-			defaultData.title =  v.title || '';
 			let result = Object.assign(defaultData, data);
 			if ( v.type === 'get'){
-				if(req.session.character === 'admin' ){
-					res.render('index',result);
-				}else{
-					result.title = '错误列表';
-					res.render('report',result);
-				}
+				res.render('index',result);
 			}
 		});
 	});

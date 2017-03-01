@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title><%= title%></title>
+    <title></title>
     <link rel="stylesheet" type="text/css" href="../css/public.css">
     <link rel="stylesheet" type="text/css" href="../css/user.css">
     <script type="text/javascript">
         var GLOBAL_CONFIG = {
             isLogin: <% if (isLogin) { %>true<% }else{ %>false <% }%>,
-            character: "<% if (isLogin) { %><%= character %><%}%>"
+            isAdmin: <% if (isLogin && character == 'admin') { %> true <%}else{%> false <%}%>,
+            userName: "<% if (isLogin) { %><%= userName %><%}%>"
         }
 
     </script>
@@ -20,6 +21,7 @@
 
 <body>
 <div id="ger-ui"></div>
+<<<<<<< HEAD
 <!-- 
 <div class="container">
    
@@ -45,6 +47,8 @@
         </div>
     </div>
 </div> -->
+=======
+>>>>>>> 687a4eb54d664e09848139be8101f8f2a0670c7d
 <script type="text/javascript" src="http://127.0.0.1:8889/dist/main.js"></script>
 </body>
 </html>
