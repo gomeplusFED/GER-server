@@ -12,8 +12,8 @@ input{background:none;}
 
 .left_area ul{display:inline-block;width:150px;border-top:1px solid #999;}
 .left_area li{border:1px solid #999;border-top:none;}
-.right_area li{padding:0 20px;border-bottom:1px dashed #eae6e6;margin-bottom:10px;line-height:34px;}
-.userlist .btn{font-size:12px;/* width:75px; */padding: 4px 10px;/* height:18px; */border-radius:5px;border:1px solid #999;/* line-height:18px; */margin-top:6px;margin-left:10px;}
+.right_area li{padding:0 20px;/*border-bottom:1px dashed #eae6e6;*/margin-bottom:10px;line-height:34px;}
+.userlist .btn{font-size:12px;/* width:75px; */padding: 4px 10px;/* height:18px; */border-radius:5px;border:1px solid #999;/* line-height:18px; */margin-top:6px;margin-right:50px;}
 .userlist .btn.delete{background-color:#169bd5;color:#fff;border-color:#169bd5;}
 .username,
 .password,
@@ -30,14 +30,23 @@ input{background:none;}
 .useradd .title,
 .userdetail .title,
 .changepass .title{border:1px solid #999;border-bottom:none;}
-.submit{padding-top:60px;}
+.submit{padding-top:60px;text-align: center;}
 .submit input{margin-right:30px;height:40px;line-height:40px;width:140px;border-radius:4px;background-color:#169bd5;color:#fff;}
 
-.right_area label{width:100px;display:inline-block;}
+.right_area label{width:100px;display:inline-block;margin-left: 30px;}
 .userdetail .right_area li,
 .changepass .right_area li{border-bottom:none;}
 
 
 
 
+.userlist .table_box{height:400px;overflow-y:auto;}
+.userlist table{ width: 100%; border: 1px solid #e8e8e8;}
+.userlist table thead tr{background-color:#a5aeb7;color:#fff;}
+.userlist table th,
+.userlist table td{ padding: 10px 20px; border-bottom: 1px solid #e8e8e8; line-height: 30px;}
+.userlist table th{ text-align: left;}
+.userlist table td{ color: #666;}
+.userlist table tr:hover td{ background-color: #f9f9f9;}
+.userlist table td a{ color: #333;}
 

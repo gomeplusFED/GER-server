@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pretest": "jshint -c .jshintrc  middleware routers",
-    "beautify": "node ./beatufyjs.js middleware routers",
+    "pretest": "jshint -c .jshintrc  routers middleware",
+    "beautify": "node ./beatufyjs.js routers middleware  ",
     "dev": "supervisor app.js"
   },
   "config": {
