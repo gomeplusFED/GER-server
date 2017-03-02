@@ -27,6 +27,10 @@ module.exports = function(Router){
 		{
 			router: '/report/detail',
 			type: 'get'
+		},
+		{
+			router: '/report/list',
+			type: 'get'
 		},{
 			router: '/report',
 			type: 'get'
