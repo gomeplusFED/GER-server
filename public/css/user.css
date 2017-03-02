@@ -1,5 +1,6 @@
 @charset "UTF-8";
-input{background:none;}
+input{background:none;border-radius:4px;}
+textarea{;border-radius:4px;}
 .fl{float: left;}
 .fr{float: right;}
 
@@ -8,45 +9,99 @@ input{background:none;}
 .container .title{font-size:18px;color:#333;font-weight:bold;height:32px;line-height:32px;padding:10px 20px;}
 .logout{font-weight:normal;height:32px;line-height:32px;cursor:pointer;}
 .left_area{width:200px;text-align:center;padding:20px 0;}
-.right_area{padding:20px;}
+.right_area{padding:10px;}
 
 .left_area ul{display:inline-block;width:150px;border-top:1px solid #999;}
 .left_area li{border:1px solid #999;border-top:none;}
 .right_area li{margin-bottom:10px;line-height:34px;}
-.userlist .btn{font-size:12px;/* width:75px; */padding: 4px 10px;/* height:18px; */border-radius:5px;border:1px solid #999;/* line-height:18px; */margin-top:6px;margin-right:50px;}
+.modpwd.right_area li,
+.useradd.right_area li,
+.userdetail.right_area li{padding:0 20px;}
+.userlist .btn{font-size:12px;/* width:75px; */padding: 4px 10px;/* height:18px; */border-radius:5px;border:1px solid #999;/* line-height:18px; */margin-top:6px;margin-right:10px;}
 .userlist .btn.delete{background-color:#169bd5;color:#fff;border-color:#169bd5;}
 .username,
 .password,
-.domains{width:200px;border:1px solid #999;padding:4px;}
+.domains{width:300px;border:1px solid #dcd6d6;padding:4px;}
 .username,
 .password{height:20px;}
 .domains{height:80px;}
 
 
+.userlist .content_title,
 .useradd .content_title,
 .userdetail .content_title,
-.changepass .content_title{font-size:18px;color:#333;font-weight:bold;height:32px;padding-bottom:30px;}
+.changepass .content_title{font-size:18px;text-indent:20px;color:#333;font-weight:bold;height:32px;padding-bottom:30px;}
 
 .useradd .title,
+.userlist .title,
 .userdetail .title,
 .changepass .title{border:1px solid #999;border-bottom:none;}
-.submit{padding-top:60px;    padding-left: 124px;}
+.submit{padding-top:20px;padding-left: 120px;}
 .submit input{margin-right:30px;height:40px;line-height:40px;width:140px;border-radius:4px;background-color:#169bd5;color:#fff;}
 
-.right_area label{width:100px;display:inline-block;margin-left: 30px;}
+.right_area label{width:100px;display:inline-block;}
 .userdetail .right_area li,
 .changepass .right_area li{border-bottom:none;}
 
 
 
 
-.userlist .table_box{height:400px;overflow-y:auto;}
+
+
 .userlist table{ width: 100%; border: 1px solid #e8e8e8;}
-.userlist table thead tr{background-color:#a5aeb7;color:#fff;}
 .userlist table th,
 .userlist table td{ padding: 10px 20px; border-bottom: 1px solid #e8e8e8; line-height: 30px;}
 .userlist table th{ text-align: left;}
 .userlist table td{ color: #666;}
-.userlist table tr:hover td{ background-color: #f9f9f9;}
+.userlist table tr:hover td{ background: #f9f9f9;}
 .userlist table td a{ color: #333;}
+
+
+/*public width*/
+.width-50{
+    width: 50%;
+    float: left;
+    text-indent: 20px;
+}
+.width-25{
+    width: 25%;
+    float: left;
+}
+.width-20{
+    width: 20%;
+    float: left;
+}
+.width-30{
+    width: 30%;
+    float: left;
+}
+
+.width-25 a{
+    margin-right:10px;
+}
+
+a.btns{
+	display: inline-block;
+    padding: 0 10px;
+    line-height: 30px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 5px;
+    background: #eee;
+}
+a.btns:hover{
+	color: #fff;
+    background: #ee2f2f;
+    border-color: #ee2f2f;
+}
+
+h1{
+	font-size: 16px;
+    line-height: 30px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 0 0 20px 20px;
+}
+
+
 

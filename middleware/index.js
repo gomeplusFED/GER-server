@@ -50,10 +50,12 @@ module.exports = function(app) {
         err.status = 404;
         next(err);
     });
-    app.use(function(err, req, res, next) {
-        // 设置响应状态
-        res.status(err.status || 500);
-        // 渲染错误处理页
-        res.send(`404`);
+    app.use(function() {
+        if(arguments.length === 4 ){
+            // 设置响应状态
+            arguments[2].status(arguments[0].status || 500);
+            // 渲染错误处理页
+            arguments[2].send(`404`);
+        }
     });
 };
