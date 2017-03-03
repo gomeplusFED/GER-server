@@ -11,7 +11,8 @@ var session = require('cookie-session');
 var lactate = require('lactate');
 var flash = require('flashify');
 var routers = require('../routers');
-
+var beforeLogin = require('../api/beforeLogin');
+var api = require('../api');
 module.exports = function(app) {
     app.engine('html', ejs.renderFile);
     app.set('view engine', 'html');
@@ -20,7 +21,10 @@ module.exports = function(app) {
     app.use(bodyParser.urlencoded({
         extended: false
     }));
-    //  
+    
+    /*app.all('*', function(req, res, next) {
+        next();
+    });*/
     //parse application/json 
     app.use(bodyParser.json());
 
@@ -37,10 +41,15 @@ module.exports = function(app) {
 
 
 
+
+    app.use(beforeLogin());
+
     routers.forEach(function(router) {
 
         app.use(router);
     });
+
+    app.use(api());
 
     app.use(lactate.static(path.join(__dirname, '../public')));
   

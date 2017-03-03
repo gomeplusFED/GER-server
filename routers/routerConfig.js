@@ -27,8 +27,7 @@ module.exports = function(Router){
 		{
 			router: '/report/detail',
 			type: 'get'
-		},
-		{
+		},{
 			router: '/report/list',
 			type: 'get'
 		},{
@@ -42,6 +41,7 @@ module.exports = function(Router){
 	
 	routers.forEach((v)=>{
 		Router[v.type](v.router, function(req,res){
+			console.log(1111111)
 			let data = v.beforeRender ? v.beforeRender(req, res) : {};
 			let defaultData = {
 				isLogin: req.session.isLogin,
@@ -49,14 +49,10 @@ module.exports = function(Router){
 				userName: req.session.userName
 			};
 			let result = Object.assign(defaultData, data);
-			if ( v.type === 'get'){
-				res.render('index',result);
-			}
+			res.render('index',result);
 		});
 	});
-			
-
-	
+		
 	return Router;
 
 };

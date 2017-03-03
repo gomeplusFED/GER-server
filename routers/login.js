@@ -12,22 +12,8 @@ module.exports = function(Router){
 		}
 	});
 
-	Router.post('/login', function(req, res,next) {
-		if (req.session.isLogin){
-			next('没有权限');
-		}else{
-			var reqBody = req.body;
-			if(reqBody.userName&&reqBody.passWord ){
-				doLogin(req, res, reqBody.userName, reqBody.passWord);
-				res.redirect('/user');
-			}else{
-				req.session.loginError =  '账号或密码无效，请重试！';
-				res.redirect('/login');
-			}
-		}
-	});
 
-	Router.all(/^((?!\/css|\/img|\/mods|\/js).)*$/, function(req, res, next) {
+	Router.all(/^((?!\/css|\/img|\/mods|\/js|\/report\/add).)*$/, function(req, res, next) {
 	    if (req.session.isLogin) {
 	      	next();  	
 	    } else {
@@ -39,29 +25,6 @@ module.exports = function(Router){
 	    res.redirect('/login');
 	});
 
-	var userList = {
-		'test' : {
-			password: '123456',
-			character: 'admin'
-		},
-		'suman':{
-			password:'123456',
-			character: 'user'
-		}
-	
-	};
-
-	function doLogin( req, res, name, pwd ){
-		if( userList[name] && userList[name].password === pwd ){
-			req.session.userName = name;
-			req.session.isLogin = true;
-			req.session.character = userList[name].character;
-			res.redirect('/index');
-		}else{
-			req.flash('errorMsg', '账号或密码无效，请重试！');
-			res.redirect('/login');
-		}
-	}
 
 
 
