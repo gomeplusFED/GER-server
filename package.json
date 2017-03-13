@@ -42,8 +42,10 @@
     "jshint": "^2.9.4",
     "lactate": "0.13.12",
     "path": "^0.12.7",
-    "flashify": "0.1.2",
     "pre-git": "^3.13.0",
     "request": "^2.73.0"
+  },
+  "dependencies": {
+    "elasticsearch": "^12.1.3"
   }
 }

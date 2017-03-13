@@ -41,7 +41,6 @@ module.exports = function(Router){
 	
 	routers.forEach((v)=>{
 		Router[v.type](v.router, function(req,res){
-			console.log(1111111)
 			let data = v.beforeRender ? v.beforeRender(req, res) : {};
 			let defaultData = {
 				isLogin: req.session.isLogin,
