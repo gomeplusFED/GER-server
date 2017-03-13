@@ -4,13 +4,15 @@
  * @date 2017/03/03
  */
 
-
+var getAll = require('./getAll');
 
 module.exports =  [
-	/*{
-		router: '/index',
-		type: 'get'
-	},{
+	{
+		router: '/report/getAll',
+		type: 'get',
+		apiToDo: getAll
+	}
+	/*,{
 		router: '/user',
 		type: 'get'
 	},{

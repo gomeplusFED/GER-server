@@ -13,6 +13,7 @@ var flash = require('flashify');
 var routers = require('../routers');
 var beforeLogin = require('../api/beforeLogin');
 var api = require('../api');
+
 module.exports = function(app) {
     app.engine('html', ejs.renderFile);
     app.set('view engine', 'html');
@@ -24,10 +25,6 @@ module.exports = function(app) {
     
     app.all('*', function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
-        res.header("Content-Type", "image/png");
-        res.header("Access-Control-Allow-Headers", "X-Requested-With");
-        res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-        res.header("X-Powered-By",' 3.2.1')
         next();
     });
     //parse application/json 
@@ -50,10 +47,8 @@ module.exports = function(app) {
     app.use(beforeLogin());
 
     routers.forEach(function(router) {
-
         app.use(router);
     });
-
     app.use(api());
 
     app.use(lactate.static(path.join(__dirname, '../public')));

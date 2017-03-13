@@ -22,7 +22,7 @@ module.exports = function(Router){
 	});
 
 	Router.get('/', function( req,  res){
-	    res.redirect('/login');
+	    res.redirect('/index');
 	});
 
 
