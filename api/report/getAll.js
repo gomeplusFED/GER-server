@@ -5,8 +5,8 @@
  */
 
 
-module.exports = function(client,req, res){
-	let aa = client.msearch({
+module.exports = function(req, res){
+	let aa = this.msearch({ //this => client
 		//index: 'logstash-web_access*',
 		body: [
 			{index: 'logstash-web_access*'},

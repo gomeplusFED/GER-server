@@ -18,8 +18,7 @@ module.exports = function(){
 	let api = Array.prototype.concat( user, report );
 	api.forEach((v)=>{
 		Router[v.type](v.router, function(req,res){
-			console.log(v.router)
-			v.apiToDo(client,req,res);
+			v.apiToDo.call(client,req,res);
 		});
 	});
 	return Router;
