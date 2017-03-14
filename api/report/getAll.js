@@ -34,9 +34,7 @@ module.exports = function(req, res){
 		    		"bool": {
 		    			"must":{
 		    				"prefix": {
-				    			"request_url": "https://www.gomeplus.com"
-				    		},
-				    		"prefix": {
+				    			"request_url": "https://www.gomeplus.com",
 				    			"type": "INF"
 				    		}
 		    			},
@@ -53,5 +51,16 @@ module.exports = function(req, res){
 		]
 	}).then(results => {
 		res.status(200).json(results);
+		/*var arr = [];
+		for(var i = 0;i < results.responses[0].hits.hits.length; i++){
+			arr.push({
+				'type' : results.responses[0].hits.hits[i]._source.type,
+				'@timestamp' : results.responses[0].hits.hits[i]._source["@timestamp"]
+			});
+		}
+		var json = {};
+		json.responses = arr;
+		res.status(200).json(json);*/
 	});
 }
+
