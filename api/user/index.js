@@ -6,6 +6,9 @@
 
 var logout = require('./logout');
 var userlist = require('./userlist');
+var getUserInfo = require('./getUserInfo');
+var edit = require('./edit');
+var deleteUser = require('./delete');
 
 module.exports =  [
 	{
@@ -17,5 +20,20 @@ module.exports =  [
 		router: '/user/getlist',
 		type: 'post',
 		apiToDo: userlist
+	},
+	{
+		router: '/user/getUserInfo',
+		type: 'post',
+		apiToDo: getUserInfo
+	},
+	{
+		router: '/user/edit',
+		type: 'post',
+		apiToDo: edit
+	},
+	{
+		router: '/user/delete',
+		type: 'post',
+		apiToDo: deleteUser
 	}
 ]

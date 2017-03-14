@@ -4,18 +4,20 @@
  * @date 2017/03/03
  */
 //公共引用
-var fs = require('fs');
-var path = require('path');
+var userList = require('../../plugin/readUserList');
 module.exports = function(req, res, next){
 	var userName = req.body.userName;
-	fs.readFile(path.resolve(__dirname,'../../plugin/index.js'),'utf-8', function (err, data) {
-	    if(err) {
-	     	console.error(err);
-	     	return;
-	    }else{
-	    	var list = JSON.parse(data);
-	    	res.status(200).json(list[userName].child || []);
-	    }
+	var page = parseInt(req.body.page, 10);
+	var size = req.body.size || 10;
+	userList(function(){
+		var list = this[userName].child;
+		var pageSize = Math.ceil(list.length / size );
+		if( pageSize >= page ){
+			res.status(200).json(list.slice((page-1)*size, size * page) || []);
+		}else{
+			res.status(200).json(list.slice((pageSize-1)*size, size * pageSize));
+		}
 	});
-
+	
+	
 }
