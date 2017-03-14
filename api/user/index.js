@@ -5,11 +5,17 @@
  */
 
 var logout = require('./logout');
+var userlist = require('./userlist');
 
 module.exports =  [
 	{
 		router: '/logout',
 		type: 'get',
 		apiToDo: logout
+	},	
+	{
+		router: '/user/getlist',
+		type: 'post',
+		apiToDo: userlist
 	}
 ]

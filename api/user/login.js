@@ -7,7 +7,7 @@
 var userList = {
 	'test' : {
 		password: '123456',
-		character: 'admin'
+		character: 'super'
 	},
 	'suman':{
 		password:'123456',
