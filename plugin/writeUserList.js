@@ -3,17 +3,23 @@
  * @fileoverview api  writeFile.js
  * @date 2017/03/03
  */
-//公共引用
-var fs = require('fs');
-var path = require('path');
-var isWrited = true;
+let fs = require('fs');
+let path = require('path');
+let result = null;
 module.exports = function(data, callback){
 	fs.writeFile(path.resolve(__dirname,'./user.json'), data , function (err, data) {
 	    if(err) {
-	     	isWrited = false;
+	    	result = {
+	    		message: err,
+	    		code: 424
+	    	}
+	    }else{
+	    	result = {
+	    		message: '写入成功!',
+	    		code: 200,
+	    		data: true
+	    	}
 	    }
-	    callback.call(null, isWrited);
-	   
+	    callback.call(null, result);
 	});
-
 }
