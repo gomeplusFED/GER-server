@@ -9,9 +9,10 @@
     <title></title>
     <script type="text/javascript">
         var GLOBAL_CONFIG = {
-            isLogin: <% if (isLogin) { %>true<% }else{ %>false <% }%>,
-            isAdmin: <% if (isLogin && character == 'super') { %> true <%}else{%> false <%}%>,
-            userName: "<% if (isLogin) { %><%= userName %><%}%>"
+            isLogin: <%= isLogin %>,
+            isAdmin: <% if (isLogin) { %><%= isSuper %><%}%>,
+            superName: "<%= superName %>",
+            userName: "<%= userName %>"
         }
 
     </script>
