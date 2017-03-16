@@ -3,31 +3,41 @@
  * @fileoverview api user/edit.js
  * @date 2017/03/03
  */
-var userList = require('../../plugin/readUserList');
-var editUserList = require('../../plugin/writeUserList');
-module.exports = function(req, res, next){
-	var data = req.body;
-	var userName = data.userName;
-	var superName = data.superName;
-	userList(function(){
-		var lists = this;
-		var childList = lists[superName].child;
-		var index = null;
-		for(var i = 0, len = childList.length; i < len; i++){
-			if(childList[i].name === userName){
-				childList.splice(i,1);
-				break;
-			}
-		}
-		
-		editUserList( JSON.stringify(lists), (isWrited)=>{
+let userList = require('../../plugin/readUserList');
+let editUserList = require('../../plugin/writeUserList');
+module.exports =  function( req, res ){
+	let data = req.body;
+	let userName = data.userName;
+	let superName = data.superName;
+	userList(result=>{
+		if( result.code === 200 ){
+			let users = result.data;
+			let superChild = users[superName].child;
+			let childIndex = superChild.indexOf(userName);
+			//删除super字段下child数组内当前用户名
+			superChild.splice( childIndex, 1);
+			//删除children字段下当前用户名key
+			delete users[userName];
+
+			editUserList( JSON.stringify(users), (response)=>{
+				if( response.code === 200 ){
+					res.status(200).json({
+						code: 200,
+						message: '删除成功！'
+					});
+				}else{
+					res.status(200).json({
+						code: 424,
+						message: '删除失败！'
+					});
+				}
+			});
+		}else{
 			res.status(200).json({
-				code: isWrited ? 200 : 503,
-				message: isWrited? '成功' : '失败'
-			})
-		});
+				code: 424,
+				message: '读取失败！'
+			});
+		}
 	});
-	
-	
 }
 

@@ -3,46 +3,62 @@
  * @fileoverview api user/edit.js
  * @date 2017/03/03
  */
-var userList = require('../../plugin/readUserList');
-var editUserList = require('../../plugin/writeUserList');
-module.exports = function(req, res, next){
-	var data = req.body;
-	console.log(JSON.stringify(data));
-	var userName = data.userName;
-	var superName = data.superName;
-	var createTime = data.createTime;
-	var pwd = data.pwd;
-	var watchUrl = data.watchUrl;
-	var noneChild = true;
-	userList(function(){
-		///新增未做去重判断
-		var lists = this;
-		lists[superName].child = lists[superName].child || [];
-		var childList = lists[superName].child;
-		for(var i = 0, len = childList.length; i < len; i++){
-				if(childList[i].name === userName){
-					childList[i].password = pwd;
-					childList[i].watchUrl = watchUrl;
-					noneChild = false;
-				break;
+
+let userList = require('../../plugin/readUserList');
+let editUserList = require('../../plugin/writeUserList');
+module.exports = function(req, res){
+	let body = req.body;
+	let userName = body.userName;
+	let superName = body.superName;
+	let password = body.pwd;
+	let watchUrl = body.watchUrl;
+	let type = body.type;
+	//superName === userName  //编辑管理员
+	//superName !== usserName //编辑子账号
+	//var createTime = data.createTime;
+	userList(function( result ){
+		let users = result.data;
+		if( type === 'edit' ){
+			//编辑子账号
+			users[userName].password = password;
+			users[userName].watchUrl = watchUrl;
+		}else if( type === 'add' ){
+			//新建子账号
+			if( users[userName] ) {
+				res.status(200).json({
+					code: 409,
+					message: '用户名已存在'
+				});
+			}else{
+				users[superName].child.push(userName);
+				users[userName] = {
+					name: userName,
+					password: password,
+					time: '2017-03-20',
+					watchUrl: watchUrl,
+					parent: superName
+				}
 			}
-		}
-		if( noneChild ){
-			childList.push({
-				password: pwd,
-				time: createTime,
-				name: userName,
-				watchUrl: watchUrl
-			})
-		}
-		editUserList( JSON.stringify(lists), (isWrited)=>{
+		}else{
 			res.status(200).json({
-				code: isWrited ? 200 : 503,
-				message: isWrited? '成功' : '失败'
-			})
+				code: 406,
+				message: '请求参数不正确，拒绝访问！'
+			});
+		}
+	
+		editUserList( JSON.stringify(users), (response)=>{
+			if( response.code === 200 ){
+				res.status(200).json({
+					code: 200,
+					message: '成功！'
+				});
+			}else{
+				res.status(200).json({
+					code: 424,
+					message: '失败！'
+				});
+			}
 		});
 	});
-	
-	
 }
 

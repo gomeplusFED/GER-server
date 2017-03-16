@@ -4,28 +4,30 @@
  * @date 2017/03/03
  */
 
-var userList = {
-	'test' : {
-		password: '123456',
-		character: 'super'
-	},
-	'suman':{
-		password:'123456',
-		character: 'user'
-	}
+let userList = require('../../plugin/readUserList');
 
-};
-
-function doLogin( req, res, name, pwd ){
-	if( userList[name] && userList[name].password === pwd ){
-		req.session.userName = name;
-		req.session.isLogin = true;
-		req.session.character = userList[name].character;
-		res.redirect('/index');
-	}else{
-		req.flash('errorMsg', '账号或密码无效，请重试！');
-		res.redirect('/login');
-	}
+const doLogin = ( req, res, name, pwd ) => {
+	userList((data)=>{
+		if( data.code === 200 ){
+			let user = data.data[name];
+			if( user && user.password === pwd ){
+				req.session.userName = name;
+				req.session.superName = (user.child ? name : user.parent); 
+				req.session.isLogin = true;
+				req.session.isSuper = (user.child ? true : false);
+				res.redirect('/index');
+			}else{
+				req.flash('errorMsg', '账号或密码无效，请重试！');
+				res.redirect('/login');
+			}
+		}else{
+			res.status(200).json({
+				code: '424',
+				message: '读取失败！'
+			});
+		}
+	});
+	
 }
 module.exports = function(req, res, next){
 
@@ -36,8 +38,8 @@ module.exports = function(req, res, next){
 		var name = reqBody.userName;
 		var pwd = reqBody.passWord;
 		if(name&&pwd ){
-
-			if( userList[name] && userList[name].password === pwd ){
+			doLogin( req, res, name, pwd );
+			/*if( userList[name] && userList[name].password === pwd ){
 				req.session.userName = name;
 				req.session.isLogin = true;
 				req.session.character = userList[name].character;
@@ -47,7 +49,7 @@ module.exports = function(req, res, next){
 			}else{
 				req.flash('errorMsg', '账号或密码无效，请重试！');
 				res.redirect('/login');
-			}
+			}*/
 		}else{
 			req.session.loginError =  '账号或密码无效，请重试！';
 			res.redirect('/login');

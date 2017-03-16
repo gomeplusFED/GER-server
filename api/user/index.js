@@ -3,14 +3,15 @@
  * @fileoverview api user index.js
  * @date 2017/03/03
  */
+let logout = require('./logout');
+let userlist = require('./userlist');
+let getUserInfo = require('./getUserInfo');
+let edit = require('./edit');
+let deleteUser = require('./delete');
+let modPwd = require('./modPwd');
 
-var logout = require('./logout');
-var userlist = require('./userlist');
-var getUserInfo = require('./getUserInfo');
-var edit = require('./edit');
-var deleteUser = require('./delete');
 
-module.exports =  [
+module.exports = [
 	{
 		router: '/logout',
 		type: 'get',
@@ -35,5 +36,10 @@ module.exports =  [
 		router: '/user/delete',
 		type: 'post',
 		apiToDo: deleteUser
+	},
+	{
+		router: '/user/modPwd',
+		type: 'post',
+		apiToDo: modPwd
 	}
 ]

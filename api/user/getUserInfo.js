@@ -1,38 +1,25 @@
 /**
  * @author zhaodonghong
- * @fileoverview api  login.js
+ * @fileoverview api  getUserInfo.js
  * @date 2017/03/03
  */
-//公共引用
-var userList = require('../../plugin/readUserList');
-module.exports = function(req, res, next){
-	var userName = req.body.userName;
-	var superName = req.body.superName;
-	userList(function(){
-		var list = this[superName].child;
-		var hasUser = false;
-		var pwd = '';
-		var watchUrl = [];
-		for(var i = 0, len = list.length; i < len; i++){
-			if(list[i].name === userName){
-				hasUser = true;
-				pwd = list[i].password;
-				watchUrl = list[i].watchUrl;
-				break;	
-			}
-		}
-		if( hasUser ){
+
+let userList = require('../../plugin/readUserList');
+module.exports= function( req, res ){
+	let userName = req.body.userName;
+	userList(function(result){
+		let users = result.data;
+		
+		//获取子账号
+		if( users[userName] ){
 			res.status(200).json({
-				pwd: pwd,
-				watchUrl: watchUrl,
 				code: 200,
-				messsage: '获取成功'
+				messsage: '获取成功',
+				data: users[userName]
 			});
 		}else{
 			res.status(200).json({
-				code: 404,
-				pwd: '',
-				watchUrl: watchUrl,
+				code: 424,
 				messsage: '查无此人'
 			});
 		}
