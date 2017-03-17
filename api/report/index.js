@@ -5,12 +5,18 @@
  */
 
 var getAll = require('./getAll');
+var contains = require('./contains');
 
 module.exports =  [
 	{
 		router: '/report/getAll',
 		type: 'get',
 		apiToDo: getAll
+	},
+	{
+		router: '/report/contains',
+		type: 'get',
+		apiToDo: contains
 	}
 	/*,{
 		router: '/user',
