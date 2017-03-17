@@ -3,14 +3,13 @@
  * @fileoverview api index.js
  * @date 2017/03/03
  */
+let express = require('express');
+let user = require('./user');
+let report = require('./report');
+let elasticsearch = require('elasticsearch');
 
-
-var express = require('express');
-var Router = express.Router();
-var user = require('./user');
-var report = require('./report');
-var elasticsearch = require('elasticsearch');
-var client = new elasticsearch.Client({
+let Router = express.Router();
+let client = new elasticsearch.Client({
     host: '10.125.137.44:9200',
     log: 'error'
 });
@@ -22,4 +21,4 @@ module.exports = function(){
 		});
 	});
 	return Router;
-};
+}

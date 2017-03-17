@@ -5,16 +5,11 @@
  */
 
 
-
-var express = require('express');
-
-
-var Router = express.Router();
-var add = require('./report/add');
-var login = require('./user/login');
-
-
-module.exports = function addRouter(){
+let express = require('express');
+let add = require('./report/add');
+let login = require('./user/login');
+let Router = express.Router();
+module.exports = function(){
 	let api = [
 		{
 			router: '/report/add',
@@ -34,7 +29,6 @@ module.exports = function addRouter(){
 	});
 	return Router;
 }
-
 
 
 

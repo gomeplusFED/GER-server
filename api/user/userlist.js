@@ -3,19 +3,45 @@
  * @fileoverview api  login.js
  * @date 2017/03/03
  */
-//公共引用
-var fs = require('fs');
-var path = require('path');
+let userList = require('../../plugin/readUserList');
 module.exports = function(req, res, next){
-	var userName = req.body.userName;
-	fs.readFile(path.resolve(__dirname,'../../plugin/index.js'),'utf-8', function (err, data) {
-	    if(err) {
-	     	console.error(err);
-	     	return;
-	    }else{
-	    	var list = JSON.parse(data);
-	    	res.status(200).json(list[userName].child || []);
-	    }
-	});
+	let userName = req.body.superName;
+	let page = parseInt(req.body.page, 10);
+	let size = req.body.size || 10;
+	userList(function(data){
+		if( data.code === 200 ){
+			let lists = data.data;
+			let children = lists[userName].child;
+			let pageSize = Math.ceil(children.length / size );
+			let childList = [];
 
+			children.forEach(v=>{
+				childList.push(lists[v]);
+			});
+
+			if( pageSize >= page ){
+				res.status(200).json({
+					code: 200,
+					message: '获取成功！',
+					data: childList.slice((page-1)*size, size * page) || []
+				});
+			}else{
+
+				res.status(200).json({
+					code: 200,
+					message: '获取成功！',
+					data: childList.slice((pageSize-1)*size, size * pageSize)
+				});
+				
+			}
+		}else{
+			res.status(200).json({
+				code: '424',
+				message: '读取失败！'
+			});
+		}
+	});
+	
+	
+	
 }

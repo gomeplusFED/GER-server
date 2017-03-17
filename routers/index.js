@@ -3,13 +3,9 @@
  * @fileoverview routers index.js
  * @date 2017/02/22
  */
-var express = require('express');
+let express = require('express');
+let login = require('./login');
+let other = require('./routerConfig');
+let Router = express.Router();
 
-
-var router = express.Router();
-module.exports = [];
-function addRouter(path) {
-  module.exports.push(require(path)(router));
-}
-addRouter('./login');
-addRouter('./routerConfig');
+module.exports = [login(Router), other(Router)];
