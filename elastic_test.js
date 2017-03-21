@@ -62,17 +62,57 @@ const test = function test() {
 			}
 		}
 	};*/
+	/*
 	let body = {
 		size : 2,
 		from : 0,
 		query : {
-			"range" : {
-				"request_time" : {
-					"gte" : '2015-01-01'
+			"match": {
+				// 'request_params':'err_msg'
+				"message.message": {
+			        "query": "err_msg",
+			        "type": "phrase"
 				}
 			}
 		}
-	};
+	};*/ // []
+	/*let body = {
+		size : 2,
+		from : 0,
+		query : {
+			bool: {
+				must: [
+					{
+						"match": {
+							"message.message": {
+						        "query": "err_msg",
+						        "type": "phrase"
+							}
+						}
+					}
+				],
+				filter: [
+					{
+						range: {
+							"@timestamp": {
+								"gte": '01/01/2017',
+								"lte": 'now',
+                				"format": "dd/MM/yyyy||yyyy"
+							}
+						}
+					}
+				]
+			}
+			
+		}
+	};*/
+	let body = {
+		size: 10,
+		from: 0,
+		query: {
+			match_all: {}
+		}
+	}
 	console.log(`retrieving all documents (displaying ${body.size} at a time)...`);
 	let res = esClient.search({
 		index: 'logstash-web_access*',
