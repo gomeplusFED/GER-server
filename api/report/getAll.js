@@ -1,118 +1,70 @@
 /**
  * @author zhaodonghong
- * @fileoverview api report/add.js
+ * @fileoverview api report/getAll.js
  * @date 2017/03/03
  */
 
 
 module.exports = function(req, res){
-	let aa = this.msearch({ //this => client
-		//index: 'logstash-web_access*',
-		body: [
-			{index: 'logstash-web_access*'},
-		    {
-		    	"size": 2,
-		    	"query": {
-		    		"bool": {
-		    			"must":{
-		    				"regexp": {
-				    			"request_url": ".*gomeplus.com.*"
+	let itemNum = 10;
+	let from = (req.query.pages || 1 - 1) * itemNum;
+	console.log(from, itemNum);
+	let _this = this;
+	let aa = this.search({
+		index: 'logstash-web_access*',  //h5
+		// index: 'logstash-pre_adev_app_pc*',  //融合
+		body: {
+			// 3.1-3.15 err_msg 所有数据
+			"size" : itemNum,
+			"from" : from,
+			"query" : {
+				"bool": {
+					"must" : [
+						{
+							"regexp": {
+				    			"request_url": ".*err_msg=.*"
 				    		}
-		    			},
-		    			"filter": [
-		    				{
-		    					"range": {
-			    					"@timestamp": {"gt": "now-1d/d"}
-			    				}
-			    			}
-		    			]
-		    		}
-		    	}
-		   	},
-			{index: 'logstash-web_access*'},
-		   	{
-		    	"size": 2,
-		    	"query": {
-		    		"bool": {
-		    			"must":{
-		    				"regexp": {
-				    			"request_url": ".*gomeplus.com.*",
-				    			// "type": "INF"
+						},
+						{
+							"match": {
+				    			"project_name": "JS"
 				    		}
-		    			},
-		    			"filter": [
-		    				{
-		    					"range": {
-			    					"@timestamp": {"gt": "now-7d/d"}
-			    				}
-			    			}
-		    			]
-		    		}
-		    	}
-		   	},
-			{index: 'logstash-web_access*'},
-		   	{
-		    	"size": 2,
-		    	"query": {
-		    		"bool": {
-		    			"must":{
-		    				"regexp": {
-				    			"request_url": ".*gomeplus.com.*"
-				    		}
-		    			},
-		    			"filter": [
-		    				{
-		    					"range": {
-			    					"@timestamp": {"gt": "now-15d/d"}
-			    				}
-			    			}
-		    			]
-		    		}
-		    	}
-		   	},
-			{index: 'logstash-web_access*'},
-			// 匹配所有request_params 是err_msg 参数的
-		   	{
-				"size" : 2,
-				"from" : 0,
-				"query" : {
-					"match": {
-						'request_params':'err_msg'
+						},
+						{
+	    					"range": {
+		    					"@timestamp": {
+									"gte": "2017-03-01",
+									"lte": "2017-03-15"
+								}
+		    				}
+		    			}
+					]
+	    		}
+			},
+    		"aggregations": {
+    			"aggByReferer": {
+					"terms": {
+						"field": "referer.raw"
 					}
 				}
-			},
-			{index: 'logstash-web_access*'},
-			// 匹配所有request_params是以err_msg开头 必须有message.message 参数 90天之内的
-		   	{
-				"size" : 2,
-				"from" : 0,
-				"query" : {
-					"bool": {
-						"must" : [
-							{
-								"regexp": {
-					    			"request_params": "err_msg=*"
-					    		}
-							}
-						],
-		    			"filter": [
-		    				{
-		    					"range": {
-			    					"@timestamp": {"gt": "now-90d/d"}
-			    				}
-			    			},
-			    			{
-				    			"exists": {
-									"field": "message.message"
-								}
-							}
-		    			]
-		    		}
+    		},
+    		"sort": [
+				{
+					"@timestamp": {
+						"order": "desc" //asc正序(默认)    desc倒序
+					}
 				}
-			}
-		]
+			]
+		}
 	}).then(results => {
-		res.status(200).json(results);
+		var data = {};
+		data.flag = 1;
+		data.buckets = results.aggregations.aggByReferer.buckets;
+		data.buckets.forEach(function (i, v){
+			console.log(i.key, i.doc_count);
+		});
+		res.status(200).json(data);
+		// res.status(200).json(results);
 	});
 }
 
