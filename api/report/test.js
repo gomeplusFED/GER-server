@@ -11,38 +11,48 @@ module.exports = function(req, res){
 	let data = fs.readFileSync(path.resolve(__dirname,'../../plugin/user.json'),'utf-8');
 
 	let urlArr = JSON.parse(data.toString())['test'].watchUrl;
-	let aa = this.search({ //this => client
-		// index: 'logstash-web_access*',  //h5
-		index: 'logstash-pre_adev_app_pc*',  //融合
-		body: {
-	    	"size": 2,
-	    	"query": {
-	    		"bool": {
-	    			"must":[
-						{
-							"regexp": {
-				    			"request_url": ".*err_msg=.*"
-				    		}
-						},/*
-						{
-							"terms": {
-								"request_url": urlArr
-							}
-						},*/
-						{
-							"match": {
-				    			"project_name": "JS"
-				    		}
-						},
-						{
-	    					"range": {
-		    					"@timestamp": {"gt": "now-30d/d"}
-		    				}
-		    			}
-					]
-	    		}
-	    	}
-	   	}
+	let aa = this.msearch({
+		body: [
+			{index: 'logstash-pre_adev_app_pc*'},
+		    {
+		    	"size": 2,
+		    	"query": {
+		    		"bool": {
+		    			"must":[
+							{
+								"regexp": {
+					    			"request_url": ".*err_msg=.*"
+					    		}
+							},
+							{
+								"match": {
+					    			"project_name": "JS"
+					    		}
+							},
+							{
+		    					"range": {
+			    					"@timestamp": {"gt": "now-30d/d"}
+			    				}
+			    			}
+						]
+		    		}
+		    	},
+	    		"aggregations": {
+	    			"aggByReferer": {
+						"terms": {
+							"field": "referer.raw"
+						}
+					}
+	    		},
+	    		"sort": [
+					{
+						"@timestamp": {
+							"order": "desc" //asc正序(默认)    desc倒序
+						}
+					}
+				]
+		   	}
+	   	]
 	}).then(results => {
 		res.status(200).json(results);
 	});
