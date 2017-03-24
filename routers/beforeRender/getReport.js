@@ -4,14 +4,21 @@
  * @date 2017/02/22
  */
 
-var request = require('request');
-module.exports = function(req){
-	request.post('http://127.0.0.1:8888/report/getAll', {
-	  	form: {
-	  		page: req.query.page === undefined ? 0 : req.query.page
-	  	},
-	  	json: true
-	}, function (err, resp, body) {
-		console.log(body);
-	});
+let userList = require('../../plugin/readUserList');
+module.exports = function(req, res, data){
+	var userName = data.userName;
+	var watch = {
+		isReaded: true,
+		watchUrl: ''
+	}
+	console.log(data);
+	userList(function(result){
+		if( result.code === 200 ){
+			watch.watchUrl = result.data[userName].watchUrl.replace(/[/\r|\/n|/\r/\n]/, '^');
+		}else{	
+			watch.isReaded = false;
+		}
+		let resData = Object.assign(data, watch);
+		res.render('index',resData);
+	});	
 };

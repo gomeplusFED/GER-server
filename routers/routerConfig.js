@@ -3,6 +3,7 @@
  * @fileoverview routers user.js
  * @date 2017/02/22
  */
+let getReport = require('./beforeRender/getReport');
 module.exports = function(Router){
 	let user = [
 		{
@@ -31,21 +32,27 @@ module.exports = function(Router){
 			type: 'get'
 		},{
 			router: '/report',
-			type: 'get'
+			type: 'get',
+			beforeRender: getReport
 		}
 	];
 	let routers = Array.prototype.concat( user, report );
 	routers.forEach((v)=>{
 		Router[v.type](v.router, function(req,res){
-			let data = v.beforeRender ? v.beforeRender(req, res) : {};
 			let defaultData = {
 				isLogin: req.session.isLogin,
 				isSuper: req.session.isSuper,
 				userName: req.session.userName,
 				superName: req.session.superName,
+				isReaded: false,
+				watchUrl: ''
 			};
-			let result = Object.assign(defaultData, data);
-			res.render('index',result);
+			if( v.beforeRender ){
+				v.beforeRender.call(null, req, res, defaultData);
+			}else{
+				res.render('index',defaultData);
+			}
+			
 		});
 	});
 		
