@@ -10,7 +10,7 @@ module.exports = function(req, res, data){
 	var watch = {
 		isReaded: true,
 		watchUrl: ''
-	}
+	};
 	console.log(data);
 	userList(function(result){
 		if( result.code === 200 ){
