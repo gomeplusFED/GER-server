@@ -19,19 +19,19 @@ module.exports = function(req, res){
 								"must" : [
 									{
 										"regexp": {
-							    			"request_url": ".*err_msg=.*"
+							    			"request_url": ".*gomeplus.*"
 							    		}
 									},
 									{
 										"match": {
-							    			"project_name": "JS"
+							    			"project_name": "gomeo2o_pc"
 							    		}
 									},
 									{
 				    					"range": {
 					    					"@timestamp": {
 												"gte": "2017-03-01",
-												"lte": "2017-03-15"
+												"lte": "2017-03-27"
 											}
 					    				}
 					    			}
@@ -41,7 +41,7 @@ module.exports = function(req, res){
 			    		"aggregations": {
 			    			"aggByReferer": {
 								"terms": {
-									"field": "referer.raw"
+									"field": "lbs_ip.raw"
 								}
 							}
 			    		},
@@ -59,10 +59,10 @@ module.exports = function(req, res){
 			from: 0,
 			body: search
 		}).then(results => {
-			var data = {};
+			/*var data = {};
 			data.flag = 1;
 			console.log(results)
-			/*data.buckets = results.aggregations.aggByReferer.buckets;
+			data.buckets = results.aggregations.aggByReferer.buckets;
 			data.buckets.forEach(function (i, v){
 				console.log(i.key, i.doc_count);
 			});*/
