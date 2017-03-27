@@ -12,9 +12,10 @@
             isLogin: <%= isLogin %>,
             isAdmin: <% if (isLogin) { %><%= isSuper %><%}%>,
             superName: "<%= superName %>",
-            userName: "<%= userName %>"
+            userName: "<%= userName %>",
+            isReaded: <% if( isLogin && isReaded ){ %><%= isReaded %><%}else{%><%= false %><% } %>,
+            watchUrl: <% if( isLogin && isReaded ){ %>'<%- watchUrl %>'<%}else{%>''<% } %>
         }
-
     </script>
 </head>
 

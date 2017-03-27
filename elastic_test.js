@@ -15,7 +15,7 @@ const esClient = new elasticsearch.Client({
 
 // only for testing purposes
 // all calls should be initiated through the module
-function test() {
+const test = function test() {
     /*let body = {
         size: 2,
         from: 0,
@@ -107,77 +107,78 @@ function test() {
         }
     };*/
     let body = {
-        //q:"project_name:JS",
-        index: "logstash-web_access*",
-        body: {
-            size: 0,
-            query: {
-                bool: {
-                    must: [{
-                        /*
-                        message_filed: {
-                            mapping: {
-                                index: "analyzed",
-                                omit_names: true,
-                                fielddata: {
-                                    format: "disabled"
-                                },
-                                type: "string"
+            // 3.1-3.15 err_msg 所有数据
+            "size" : 0,
+            "from" : 0,
+            "query" : {
+                "bool": {
+                    "must" : [
+                        {
+                            "regexp": {
+                                "request_url": ".*err_msg=.*"
                             }
                         },
-                        "match_mapping_type":"string",
-                        */
-                        "match": {
-                            "project_name": "JS"
-                        }
-                    }],
-                    filter: [{
-                        range: {
-                            "@timestamp": {
-                                "gte": "2017-03-07",
-                                "lte": "2017-03-10"
+                        {
+                            "match": {
+                                "message.log_master": "js"
+                            }
+                        },
+                        {
+                            "range": {
+                                "@timestamp": {
+                                    "gte": "2017-03-15",
+                                    "lte": "2017-03-24"
+                                }
                             }
                         }
-                    }]
+                    ]
                 }
             },
-            aggregations: {
-                "message": {
-                    terms: {
-                        "field": "message.message.raw"
-                    },
+            "aggregations": {
+                "aggByReferer": {
+                    "terms": {
+                        "field": "message.msg.raw"
+                    }
                 }
-            }
-        }
-    };
-    console.log(`retrieving all documents (displaying ${body.size} at a time)...`);
-    let res = esClient.search(body);
+            },
+            "sort": [
+                {
+                    "@timestamp": {
+                        "order": "desc" //asc正序(默认)    desc倒序
+                    }
+                }
+            ]
+        
+    }
+    //console.log(`retrieving all documents (displaying ${body.size} at a time)...`);
+    let res = esClient.search({
+        index: 'logstash-pre_adev_app_pc*',
+        body: body
+    });
+
     res.then(results => {
-            console.log(`found ${results.hits.total} items in ${results.took}ms`);
-            console.log(results.aggregations.message.buckets);
-            /*
-            results.hits.hits.forEach((hit) => {
-                console.log(hit._source);
-            });
-            */
-            /*
-            results.hits.hits.forEach((hit) => {
-                //console.log(decodeURIComponent(hit._source.message.message));
-                arr.push({
-                    'timestamp': hit._source['@timestamp'],
-                    'server_host': hit._source.server_ip,
-                    'server_port': hit._source.server_port,
-                    'id': hit._source._id,
-                    'index': hit._source._index,
-                    'ua': hit._source.user_agent,
-                    'type': hit._source.type,
-                    'message': decodeURIComponent(hit._source.message.message)
-                });
-            });
-            */
-            /*今日错误数 7日错误数 15日错误数 错误类型数 报错脚本数 最高错误类型    kibana里面的字段不是很全*/
-        })
-        .catch(console.error);
-}
+        console.log(JSON.stringify(results));
+        // console.log(`found ${results.hits.total} items in ${results.took}ms`);
+        // let arr = [];
+        // results.hits.hits.forEach((hit, index) =>{
+        //  //console.log(decodeURIComponent(hit._source.message.message));
+        //  arr.push({
+        //      'timestamp': hit._source['@timestamp'],
+        //      'server_host': hit._source.server_ip,
+        //      'server_port': hit._source.server_port,
+        //      'id' : hit._source._id,
+        //      'index' : hit._source._index,
+        //      'ua' : hit._source.user_agent,
+        //      'type' : hit._source.type,
+        //      'message': decodeURIComponent(hit._source.message.message)
+        //      /*今日错误数 7日错误数 15日错误数 错误类型数 报错脚本数 最高错误类型    kibana里面的字段不是很全*/
+        //  }); 
+        //  // console.log(hit._source);
+        // });
+        // console.log( arr );
+    })
+    .catch(console.error);
+};
 
 test();
+console.log(11111)
