@@ -42,4 +42,4 @@ module.exports = [
 		type: 'post',
 		apiToDo: modPwd
 	}
-]
+];

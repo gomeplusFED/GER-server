@@ -5,7 +5,7 @@
  */
 var getAll = require('./getAll');
 var contains = require('./contains');
-var test = require('./test');
+var demo = require('./test');
 
 module.exports =  [
 	{
@@ -21,6 +21,6 @@ module.exports =  [
 	{
 		router: '/report/test',
 		type: 'get',
-		apiToDo: test
+		apiToDo: demo
 	}
-]
+];

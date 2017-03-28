@@ -10,11 +10,11 @@ var getSearhBody = function(v, d, i, j){
 	let timestamp = {
 						"gte": "now-"+ parseInt(d) +"d/d",
 						"lte": "now/d"
-					}
+					};
 	if( i === 0 ){
 		timestamp = {
 						"gt": "now-1d/d"
-					}
+					};
 	}
 	let searchBody = {
 					"query" : {
@@ -77,7 +77,7 @@ var getSearhBody = function(v, d, i, j){
 						];
 	}
 	return searchBody;
-}
+};
 
 module.exports = function(req, res){
 	let client = this;
@@ -86,6 +86,7 @@ module.exports = function(req, res){
 	let watchUrl = req.body.watchUrl;
 	let search = [];
 	let days = [0, 7, 15, 15];
+	let keys = ['todayErrorNum', 'weekErrorNum', 'lastFifteenErrorNum', 'scriptErrorNum'];
 	if( watchUrl ){
 		watchUrl.forEach((v, j)=>{
 			days.forEach((d, i)=>{
@@ -94,8 +95,8 @@ module.exports = function(req, res){
 			});
 		});
 		client.msearch({
-			size: 0,
-			from: 0,
+			size: itemNum,
+			from: from,
 			body: search
 		}).then(results => {
 			
@@ -105,10 +106,10 @@ module.exports = function(req, res){
 			let child = {};
 			let agg = '';
 			let key = '';
-			//number0 => 今日错误数;
-			//number1 => 7日错误数;
-			//number2 => 15日错误数;
-			//number3 => 15日报错脚本数;
+			//todayErrorNum => 今日错误数;
+			//weekErrorNum => 7日错误数;
+			//lastFifteenErrorNum => 15日错误数;
+			//scriptErrorNum => 15日报错脚本数;
 			//local => 域名;
 			//errorType => 15日错误类型数
 			//highError => 15日最高错误类型;
@@ -117,17 +118,17 @@ module.exports = function(req, res){
 					if( i % 4 === 2 ){
 						agg = v.aggregations;
 						key = Object.keys(agg)[0];
-						child['number2'] = v.hits.total;
-						child['local'] = key.split('|')[0];
-						child['errorType'] = v.aggregations[key].buckets.length;
-						child['highError'] = v.aggregations[key].buckets[0].key;
+						child[ keys[i%4]]  = v.hits.total;
+						child.local = key.split('|')[0];
+						child.errorType = v.aggregations[key].buckets.length;
+						child.highError = v.aggregations[key].buckets[0].key;
 					}else if( i % 4 === 3 ){
 						agg = v.aggregations;
 						key = Object.keys(agg)[0];
-						child['number3'] = v.aggregations[key].buckets.length
+						child[ keys[i%4]]  = v.aggregations[key].buckets.length;
 					}
 				}else{
-					child[ 'number' + i%4] = v.hits.total;
+					child[ keys[i%4]] = v.hits.total;
 				}
 
 				if( i % 4 === 3 && i !== 0){
@@ -145,7 +146,7 @@ module.exports = function(req, res){
 		res.status(200).json({
 			code: 424,
 			message: '参数错误'
-		})
+		});
 	}
-}
+};
 

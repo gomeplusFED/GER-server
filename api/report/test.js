@@ -4,14 +4,14 @@
  * @date 2017/03/22
  */
 
-const fs = require('fs');
-const path = require('path');
+//const fs = require('fs');
+//const path = require('path');
 
 module.exports = function(req, res){
-	let data = fs.readFileSync(path.resolve(__dirname,'../../plugin/user.json'),'utf-8');
+	//let data = fs.readFileSync(path.resolve(__dirname,'../../plugin/user.json'),'utf-8');
 
-	let urlArr = JSON.parse(data.toString())['test'].watchUrl;
-	let aa = this.msearch({
+	//let urlArr = JSON.parse(data.toString()).test.watchUrl;
+	this.msearch({
 		body: [
 			{index: 'logstash-pre_adev_app_pc*'},
 		    {
@@ -56,7 +56,7 @@ module.exports = function(req, res){
 	}).then(results => {
 		res.status(200).json(results);
 	});
-}
+};
 
 
 /*module.exports = function(req, res){

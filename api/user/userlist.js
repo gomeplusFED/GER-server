@@ -4,7 +4,7 @@
  * @date 2017/03/03
  */
 let userList = require('../../plugin/readUserList');
-module.exports = function(req, res, next){
+module.exports = function(req, res){
 	let userName = req.body.superName;
 	let page = parseInt(req.body.page, 10);
 	let size = req.body.size || 10;
@@ -44,4 +44,4 @@ module.exports = function(req, res, next){
 	
 	
 	
-}
+};
