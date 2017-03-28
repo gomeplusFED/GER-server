@@ -11,7 +11,6 @@ module.exports = function(req, res, data){
 		isReaded: true,
 		watchUrl: ''
 	};
-	console.log(data);
 	userList(function(result){
 		if( result.code === 200 ){
 			watch.watchUrl = result.data[userName].watchUrl.replace(/[/\r|\/n|/\r/\n]/, '^');

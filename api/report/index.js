@@ -10,7 +10,7 @@ var test = require('./test');
 module.exports =  [
 	{
 		router: '/report/getAll',
-		type: 'get',
+		type: 'post',
 		apiToDo: getAll
 	},
 	{

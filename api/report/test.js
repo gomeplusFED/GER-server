@@ -11,7 +11,7 @@ module.exports = function(req, res){
 	let data = fs.readFileSync(path.resolve(__dirname,'../../plugin/user.json'),'utf-8');
 
 	// let urlArr = JSON.parse(data.toString())[req.session.userName].watchUrl.split('\n');
-	let urlArr = req.query.watchUrl;
+	let urlArr = req.body.watchUrl;
 	console.log(urlArr);
 	// urlArr = ['h5.gomeplus','gomeplus'];
 	/*urlArr.forEach(v=>{
