@@ -22,12 +22,12 @@ var getSearhBody = function(v, d, i, j){
 							"must" : [
 								{
 									"regexp": {
-						    			"request_url": regexp
+						    			"message.host": regexp
 						    		}
 								},
 								{
 									"match": {
-						    			"project_name": "gomeo2o_pc"
+						    			"message.log_master": "js"
 						    		}
 								}
 							],
@@ -46,7 +46,7 @@ var getSearhBody = function(v, d, i, j){
 		searchBody.aggregations = {
 					    			[name]: {
 										"terms": {
-											"field": "lbs_ip.raw"
+											"field": "message.msg.raw"
 										}
 									}
 					    		};
@@ -63,7 +63,7 @@ var getSearhBody = function(v, d, i, j){
 		searchBody.aggregations = {
 					    			[name]: {
 										"terms": {
-											"field": "client_ip.raw"
+											"field": "message.targetUrl.raw"
 										}
 									}
 					    		};
@@ -94,18 +94,18 @@ module.exports = function(req, res){
 				search.push(getSearhBody(v, d, i, j));
 			});
 		});
+		//console.log(search);
 		client.msearch({
 			size: itemNum,
 			from: from,
 			body: search
 		}).then(results => {
-			
-			
+			//console.log(JSON.stringify(results));
 			let data = results.responses;
 			let result = [];
 			let child = {};
 			let agg = '';
-			let key = '';
+			let item = '';
 			//todayErrorNum => 今日错误数;
 			//weekErrorNum => 7日错误数;
 			//lastFifteenErrorNum => 15日错误数;
@@ -117,15 +117,15 @@ module.exports = function(req, res){
 				if( v.aggregations ){
 					if( i % 4 === 2 ){
 						agg = v.aggregations;
-						key = Object.keys(agg)[0];
+						item = Object.keys(agg)[0];
 						child[ keys[i%4]]  = v.hits.total;
-						child.local = key.split('|')[0];
-						child.errorType = v.aggregations[key].buckets.length;
-						child.highError = v.aggregations[key].buckets[0].key;
+						child.local = item.split('|')[0];
+						child.errorType = v.aggregations[item].buckets.length;
+						child.highError = child.errorType > 0 ? v.aggregations[item].buckets[0].key : '';
 					}else if( i % 4 === 3 ){
 						agg = v.aggregations;
-						key = Object.keys(agg)[0];
-						child[ keys[i%4]]  = v.aggregations[key].buckets.length;
+						item = Object.keys(agg)[0];
+						child[ keys[i%4]]  = v.aggregations[item].buckets.length;
 					}
 				}else{
 					child[ keys[i%4]] = v.hits.total;
@@ -139,8 +139,11 @@ module.exports = function(req, res){
 			res.status(200).json({
 				code: 200,
 				message: '获取成功',
-				data: result
+				data: result,
+				originalData: results
 			});
+		},results => {
+			console.log(results);
 		});
 	}else{
 		res.status(200).json({
