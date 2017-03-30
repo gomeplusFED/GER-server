@@ -7,72 +7,70 @@
 // const fs = require('fs');
 // const path = require('path');
 
-module.exports = function(req, res){
-	// let data = fs.readFileSync(path.resolve(__dirname,'../../plugin/user.json'),'utf-8');
+module.exports = function ( req, res ) {
+    // let data = fs.readFileSync(path.resolve(__dirname,'../../plugin/user.json'),'utf-8');
 
-	// let urlArr = JSON.parse(data.toString())[req.session.userName].watchUrl.split('\n');
-	let urlArr = req.body.watchUrl;
-	console.log(urlArr);
-	// urlArr = ['h5.gomeplus','gomeplus'];
-	/*urlArr.forEach(v=>{
-		v = v.replace('.', '\.');
-		console.log(v);
-	});*/
-	this.msearch({
-		body: [
-			{index: 'logstash-web_access*'},
-		    {
-		    	"size": 2,
-		    	"query": {
-		    		"bool": {
-		    			"must":[
-							{
-								"regexp": {
-					    			"request_url": ".*" + 'aa' + ".*"
-					    		}
-							},
-							/*{
+    // let urlArr = JSON.parse(data.toString())[req.session.userName].watchUrl.split('\n');
+    let urlArr = req.body.watchUrl;
+    console.log( urlArr );
+    // urlArr = ['h5.gomeplus','gomeplus'];
+    /*urlArr.forEach(v=>{
+    	v = v.replace('.', '\.');
+    	console.log(v);
+    });*/
+    this.msearch( {
+        body: [ {
+                index: 'logstash-web_access*'
+            },
+            {
+                "size": 2,
+                "query": {
+                    "bool": {
+                        "must": [ {
+                                "regexp": {
+                                    "request_url": ".*" + 'aa' + ".*"
+                                }
+                            },
+                            /*{
 								"match": {
 					    			"message.log_master": "js"
 					    		}
 							},	*/
-							{
-		    					"range": {
-			    					"@timestamp": {
-										"gte": "2017-03-22",
-										"lte": "2017-03-25"
-									}
-			    				}
-			    			}
-						]
-		    		}
-		    	},
-	    		"aggregations": {
-	    			"aggByReferer": {
-						"terms": {
-							"field": "message.msg.raw"
-						}
-					}
-	    		},
-	    		"sort": [
-					{
-						"@timestamp": {
-							"order": "desc" //asc正序(默认)    desc倒序
-						}
-					}
-				]
-		   	}
-	   	]
-	}).then(results => {
-		var data = {};
-		data.flag = 1;
-		data.buckets = results.responses[0].aggregations.aggByReferer.buckets;
-		data.buckets.forEach(function (i){
-			i.key = decodeURIComponent(i.key);
-			console.log(i.key, i.doc_count);
-		});
-		res.status(200).json(results);
-	});
+                            {
+                                "range": {
+                                    "@timestamp": {
+                                        "gte": "2017-03-22",
+                                        "lte": "2017-03-25"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "aggregations": {
+                    "aggByReferer": {
+                        "terms": {
+                            "field": "message.msg.raw"
+                        }
+                    }
+                },
+                "sort": [ {
+                    "@timestamp": {
+                        "order": "desc" //asc正序(默认)    desc倒序
+                    }
+                } ]
+            }
+        ]
+    } ).then( results => {
+        var data = {};
+        data.flag = 1;
+        data.buckets = results.responses[ 0 ].aggregations.aggByReferer.buckets;
+        data.buckets.forEach( function ( i ) {
+            i.key = decodeURIComponent( i.key );
+            console.log( i.key, i.doc_count );
+        } );
+        res.status( 200 ).json( results );
+    } );
 };
 
 
@@ -324,5 +322,3 @@ module.exports = function(req, res){
 		res.status(200).json(results);
 	});
 }*/
-
-
