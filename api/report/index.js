@@ -7,6 +7,7 @@ var getAll = require('./getAll');
 var contains = require('./contains');
 var list = require('./list');
 var demo = require('./test');
+var detail = require('./getDetail');
 
 module.exports =  [
 	{
@@ -28,5 +29,10 @@ module.exports =  [
 		router: '/report/list',
 		type: 'post',
 		apiToDo: list
+	},
+	{
+		router: '/report/getDetail',
+		type: 'post',
+		apiToDo: detail
 	}
 ];

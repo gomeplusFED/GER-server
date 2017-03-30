@@ -10,7 +10,7 @@ var getSearhBody = ( reqBody ) => {
 	//搜索域名
 	let local = reqBody.local;
 	//搜索期限
-	let lastDays = 15;//reqBody.lastDays || 1;
+	let lastDays = reqBody.lastDays || 1;
 	//搜索类型
 	let searchType = reqBody.type || '';
 	//搜索关键词
@@ -78,7 +78,7 @@ module.exports = function(req, res){
 	//开始位置
 	let from = (reqBody.pageNum - 1) * itemNum; 
 	let localRegexp = replacePoint( reqBody.local );
-	let orderByNumber = reqBody.order === 'errorNum' ? true : false; 
+	let orderByNumber = reqBody.order === 'type' ? true : false; 
 	client.search({
 		size: itemNum,
 		from: from,
@@ -101,7 +101,7 @@ module.exports = function(req, res){
 		});
 		if( orderByNumber ){
 			client.search({
-				size: 10,
+				size: itemNum,
 				from: 0,
 				index: 'logstash-web_access*',
 				body: {
