@@ -4,6 +4,8 @@
  * @date 2017/02/22
  */
 let getReport = require( './beforeRender/getReport' );
+let getReportList = require( './beforeRender/getReportList' );
+let getReportDetail = require( './beforeRender/getReportDetail' );
 module.exports = function ( Router ) {
     let user = [ {
         router: '/index',
@@ -23,10 +25,12 @@ module.exports = function ( Router ) {
     } ];
     let report = [ {
         router: '/report/detail',
-        type: 'get'
+        type: 'get',
+        beforeRender: getReportDetail
     }, {
         router: '/report/list',
-        type: 'get'
+        type: 'get',
+        beforeRender: getReportList
     }, {
         router: '/report',
         type: 'get',
