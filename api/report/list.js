@@ -74,7 +74,7 @@ module.exports = function(req, res){
 	let client = this;
 	let reqBody = req.body;
 	//数据条数
-	let itemNum = reqBody.size || 10;
+	let itemNum = reqBody.size || 20;
 	//开始位置
 	let from = (reqBody.pageNum - 1) * itemNum; 
 	let localRegexp = replacePoint( reqBody.local );
