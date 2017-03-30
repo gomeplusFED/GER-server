@@ -13,7 +13,7 @@ module.exports = function ( req, res, data ) {
     };
     userList( function ( result ) {
         if ( result.code === 200 ) {
-            watch.watchUrl = result.data[ userName ].watchUrl.replace( /[/\r|\/n|/\r/\n]/, '^' );
+            watch.watchUrl = result.data[ userName ].watchUrl.replace( /[/\r|\/n|/\r/\n]/g, '^' );
         } else {
             watch.isReaded = false;
         }
