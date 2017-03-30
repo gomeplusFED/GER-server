@@ -1,1 +1,1 @@
-{"test":{"name":"test","time":"2017-03-20","password":"12345678","watchUrl":"gomeplus.com\nh5.","child":["test2"]},"test2":{"name":"test2","password":"123456","time":"2017-03-20","watchUrl":"eeeeee\nffdsfs\nsdfdsfs","parent":"test"}}
+{"test":{"name":"test","time":"2017-03-20","password":"12345678","watchUrl":"www.gomeplus.com\nh5.\nabc.com\ngogo.com\nss.com","child":["test2"]},"test2":{"name":"test2","password":"123456","time":"2017-03-20","watchUrl":"eeeeee\nffdsfs\nsdfdsfs","parent":"test"}}
