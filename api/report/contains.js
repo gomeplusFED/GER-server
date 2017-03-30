@@ -8,8 +8,8 @@
 module.exports = function(req, res){
 	let itemNum = 10;
 	let from = (req.query.pages || 1 - 1) * itemNum;
-	console.log(from, itemNum);
-	let aa = this.search({
+	
+	this.search({
 		index: 'logstash-web_access*',
 		body: {
 			// 3.1-3.15 err_msg 所有数据
@@ -60,5 +60,5 @@ module.exports = function(req, res){
 		data.buckets = results.aggregations.aggByReferer.buckets;
 		res.status(200).json(data);
 	});
-}
+};
 

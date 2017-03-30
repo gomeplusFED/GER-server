@@ -37,7 +37,7 @@ module.exports = function(req, res){
 					time: '2017-03-20',
 					watchUrl: watchUrl,
 					parent: superName
-				}
+				};
 			}
 		}else{
 			res.status(200).json({
@@ -60,5 +60,5 @@ module.exports = function(req, res){
 			}
 		});
 	});
-}
+};
 

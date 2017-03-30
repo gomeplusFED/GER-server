@@ -4,11 +4,11 @@
  * @date 2017/03/22
  */
 
-const fs = require('fs');
-const path = require('path');
+// const fs = require('fs');
+// const path = require('path');
 
 module.exports = function(req, res){
-	let data = fs.readFileSync(path.resolve(__dirname,'../../plugin/user.json'),'utf-8');
+	// let data = fs.readFileSync(path.resolve(__dirname,'../../plugin/user.json'),'utf-8');
 
 	// let urlArr = JSON.parse(data.toString())[req.session.userName].watchUrl.split('\n');
 	let urlArr = req.body.watchUrl;
@@ -18,7 +18,7 @@ module.exports = function(req, res){
 		v = v.replace('.', '\.');
 		console.log(v);
 	});*/
-	let aa = this.msearch({
+	this.msearch({
 		body: [
 			{index: 'logstash-web_access*'},
 		    {
@@ -67,7 +67,7 @@ module.exports = function(req, res){
 		var data = {};
 		data.flag = 1;
 		data.buckets = results.responses[0].aggregations.aggByReferer.buckets;
-		data.buckets.forEach(function (i, v){
+		data.buckets.forEach(function (i){
 			i.key = decodeURIComponent(i.key);
 			console.log(i.key, i.doc_count);
 		});

@@ -28,7 +28,7 @@ const doLogin = ( req, res, name, pwd ) => {
 		}
 	});
 	
-}
+};
 module.exports = function(req, res, next){
 
 	if (req.session.isLogin){
@@ -56,4 +56,4 @@ module.exports = function(req, res, next){
 		}
 	}
 
-}
+};

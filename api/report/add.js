@@ -8,4 +8,4 @@ let path = require('path');
 module.exports = function(req, res){
  	let img = fs.createReadStream(path.resolve(__dirname,'../../public/images/read.gif'));
  	img.pipe(res);
-}
+};
