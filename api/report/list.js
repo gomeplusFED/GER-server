@@ -3,8 +3,8 @@
  * @fileoverview api report/getAll.js
  * @date 2017/03/03
  */
-var replacePoint = (str) => {
-	return '.*' + str.replace(/\./g,"\.") + '.*';
+var replacePoint = ( str ) => {
+    return '.*' + str.replace( /\./g, "\." ) + '.*';
 };
 var getSearhBody = ( reqBody ) => {
 	//搜索域名
@@ -49,26 +49,26 @@ var getSearhBody = ( reqBody ) => {
 				"must": mustSearch,
 				"filter":{
                     "range": {
-						"@timestamp": timestamp
-					}
-				}
-			}
-		},
-		"aggregations": {
-			"type": {
-						"terms": {
-							"field": "message.msg.raw"
-						}
-						
-					}
-		},
-		"sort": [{
-					"@timestamp": {
-						"order": "desc" //asc正序(默认)    desc倒序
-					}
-				}]
-	};
-	return searchBody;
+                        "@timestamp": timestamp
+                    }
+                }
+            }
+        },
+        "aggregations": {
+            "type": {
+                "terms": {
+                    "field": "message.msg.raw"
+                }
+
+            }
+        },
+        "sort": [ {
+            "@timestamp": {
+                "order": "desc" //asc正序(默认)    desc倒序
+            }
+        } ]
+    };
+    return searchBody;
 };
 module.exports = function(req, res){
 	let client = this;
@@ -111,65 +111,64 @@ module.exports = function(req, res){
 						    		"bool": {
 						    			"must": [{
 
-							    			"regexp": {
-							    				"message.host": localRegexp
-							    			}
-						    			}]
-						    		}
-						    	},
-					        	"functions": errorNumSearch,
-					        	"score_mode": "first"
+                                        "regexp": {
+                                            "message.host": localRegexp
+                                        }
+                                    } ]
+                                }
+                            },
+                            "functions": errorNumSearch,
+                            "score_mode": "first"
 
-					        }
-					    }
-				}
-			}).then(data=>{
-				res.status(200).json({
-					code: 200,
-					message: '成功',
-					data: {
-						results: data.hits.hits,
-						buckets: {
-							keys: bucketsKeys,
-							counts: bucketsCounts
-						},
-						page: {
-							pages: Math.ceil(data.hits.total / itemNum),
-							currentPage: reqBody.pageNum
-						}
-					}
-				});
-			},data=>{
-				res.status(200).json({
-					code: 424,
-					data: data,
-					message: '获取失败'
-				});
-			});
-		}else{
-			res.status(200).json({
-				code: 200,
-				message: '成功',
-				data: {
-					results: results.hits.hits,
-					buckets: {
-						keys: bucketsKeys,
-						counts: bucketsCounts
-					},
-					page: {
-						pages: Math.ceil(results.hits.total / itemNum),
-						currentPage: reqBody.pageNum
-					}
-				}
-			});
-			
-		}
-	}, results => {
-		res.status(200).json({
-			code: 424,
-			data: results,
-			message: '获取失败'
-		});
-	});
+                        }
+                    }
+                }
+            } ).then( data => {
+                res.status( 200 ).json( {
+                    code: 200,
+                    message: '成功',
+                    data: {
+                        results: data.hits.hits,
+                        buckets: {
+                            keys: bucketsKeys,
+                            counts: bucketsCounts
+                        },
+                        page: {
+                            pages: Math.ceil( data.hits.total / itemNum ),
+                            currentPage: reqBody.pageNum
+                        }
+                    }
+                } );
+            }, data => {
+                res.status( 200 ).json( {
+                    code: 424,
+                    data: data,
+                    message: '获取失败'
+                } );
+            } );
+        } else {
+            res.status( 200 ).json( {
+                code: 200,
+                message: '成功',
+                data: {
+                    results: results.hits.hits,
+                    buckets: {
+                        keys: bucketsKeys,
+                        counts: bucketsCounts
+                    },
+                    page: {
+                        pages: Math.ceil( results.hits.total / itemNum ),
+                        currentPage: reqBody.pageNum
+                    }
+                }
+            } );
+
+        }
+    }, results => {
+        res.status( 200 ).json( {
+            code: 424,
+            data: results,
+            message: '获取失败'
+        } );
+    } );
 };
-
