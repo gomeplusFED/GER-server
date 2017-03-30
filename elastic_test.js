@@ -23,7 +23,7 @@ const test = function test() {
                     }
             }
         
-    }
+    };
     //console.log(`retrieving all documents (displaying ${body.size} at a time)...`);
     let res = esClient.search({
         index: 'logstash-web_access*',
@@ -55,4 +55,4 @@ const test = function test() {
 };
 
 test();
-console.log(11111)
+console.log(11111);
