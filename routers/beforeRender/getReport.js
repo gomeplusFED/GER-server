@@ -19,5 +19,5 @@ module.exports = function(req, res, data){
 		}
 		let resData = Object.assign(data, watch);
 		res.render('index',resData);
-	});	
+	});
 };

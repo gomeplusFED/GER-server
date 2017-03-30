@@ -73,7 +73,7 @@ module.exports = function(req, res){
 		});
 		res.status(200).json(results);
 	});
-}
+};
 
 
 /*module.exports = function(req, res){
