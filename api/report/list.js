@@ -129,6 +129,7 @@ module.exports = function(req, res){
                     message: '成功',
                     data: {
                         results: data.hits.hits,
+                    	total: data.hits.total,
                         buckets: {
                             keys: bucketsKeys,
                             counts: bucketsCounts
@@ -152,6 +153,7 @@ module.exports = function(req, res){
                 message: '成功',
                 data: {
                     results: results.hits.hits,
+                    total: results.hits.total,
                     buckets: {
                         keys: bucketsKeys,
                         counts: bucketsCounts
