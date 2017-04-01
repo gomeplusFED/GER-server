@@ -44,11 +44,11 @@ module.exports = function ( Router ) {
                 watchUrl: ''
             };
             userList( function ( result ) {
-                if ( result.code === 200 ) { 
-                    data.watchUrl = result.data[data.userName].watchUrl.replace( /[/\r|\/n|/\r/\n]/g, '^' );
+                if ( result.code === 200 ) {
+                    data.watchUrl = result.data[ data.userName ].watchUrl.replace( /[/\r|\/n|/\r/\n]/g, '^' );
                     data.isReaded = true;
                     res.render( 'index', data );
-                    
+
                 } else {
                     data.isReaded = false;
                 }
