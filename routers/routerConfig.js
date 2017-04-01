@@ -3,9 +3,7 @@
  * @fileoverview routers user.js
  * @date 2017/02/22
  */
-let getReport = require( './beforeRender/getReport' );
-let getReportList = require( './beforeRender/getReportList' );
-let getReportDetail = require( './beforeRender/getReportDetail' );
+let userList = require( '../plugin/readUserList' );
 module.exports = function ( Router ) {
     let user = [ {
         router: '/index',
@@ -25,21 +23,19 @@ module.exports = function ( Router ) {
     } ];
     let report = [ {
         router: '/report/detail',
-        type: 'get',
-        beforeRender: getReportDetail
+        type: 'get'
     }, {
         router: '/report/list',
-        type: 'get',
-        beforeRender: getReportList
+        type: 'get'
     }, {
         router: '/report',
-        type: 'get',
-        beforeRender: getReport
+        type: 'get'
     } ];
     let routers = Array.prototype.concat( user, report );
     routers.forEach( ( v ) => {
         Router[ v.type ]( v.router, function ( req, res ) {
-            let defaultData = {
+
+            let data = {
                 isLogin: req.session.isLogin,
                 isSuper: req.session.isSuper,
                 userName: req.session.userName,
@@ -47,11 +43,16 @@ module.exports = function ( Router ) {
                 isReaded: false,
                 watchUrl: ''
             };
-            if ( v.beforeRender ) {
-                v.beforeRender.call( null, req, res, defaultData );
-            } else {
-                res.render( 'index', defaultData );
-            }
+            userList( function ( result ) {
+                if ( result.code === 200 ) {
+                    data.watchUrl = result.data[ data.userName ].watchUrl.replace( /[/\r|\/n|/\r/\n]/g, '^' );
+                    data.isReaded = true;
+                    res.render( 'index', data );
+
+                } else {
+                    data.isReaded = false;
+                }
+            } );
 
         } );
     } );
