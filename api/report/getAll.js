@@ -131,6 +131,9 @@ module.exports = function ( req, res ) {
                     child = {};
                 }
             } );
+            result = result.filter( ( item ) => {
+                return item.lastFifteenErrorNum;
+            } );
             res.status( 200 ).json( {
                 code: 200,
                 message: '获取成功',
