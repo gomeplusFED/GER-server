@@ -9,7 +9,9 @@
   "scripts": {
     "pretest": "jshint -c .jshintrc  routers middleware api",
     "beautify": "node ./beatufyjs.js routers middleware  api ",
-    "dev": "supervisor app.js"
+    "StaticDev": "cd public/GER-UI/ && npm run dev",
+    "ServerDev": "supervisor app.js",
+    "start":"npm-run-all --parallel StaticDev ServerDev"
   },
   "config": {
     "pre-git": {
@@ -39,8 +41,10 @@
     "js-beautify": "^1.6.11",
     "jshint": "^2.9.4",
     "lactate": "0.13.12",
+    "npm-run-all": "^4.0.2",
     "path": "^0.12.7",
-    "pre-git": "^3.13.0"
+    "pre-git": "^3.13.0",
+    "supervisor": "^0.12.0"
   },
   "dependencies": {
     "body-parser": "^1.17.1"

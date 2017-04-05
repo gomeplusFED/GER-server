@@ -1,0 +1,3 @@
+[submodule "public/GER-UI"]
+	path = public/GER-UI
+	url = https://github.com/gomeplusFED/GER-UI.git
