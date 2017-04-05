@@ -1,1 +1,20 @@
+<<<<<<< HEAD
 {"test":{"name":"test","time":"2017-03-20","password":"12345678","watchUrl":"www.gomeplus.com\nh5.\nabc.com\ngogo.com\nss.com\n.dfdfd\nmeixincdn.com","child":["test2"]},"test2":{"name":"test2","password":"123456","time":"2017-03-20","watchUrl":"eeeeee\nffdsfs\nsdfdsfs","parent":"test"}}
+=======
+{
+    "test": {
+        "name": "test",
+        "time": "2017-03-20",
+        "password": "12345678",
+        "watchUrl": "www.gomeplus.com\nh5.\nabc.com\ngogo.com\nss.com\n.dfdfd",
+        "child": ["test2"]
+    },
+    "test2": {
+        "name": "test2",
+        "password": "123456",
+        "time": "2017-03-20",
+        "watchUrl": "eeeeee\nffdsfs\nsdfdsfs",
+        "parent": "test"
+    }
+}
+>>>>>>> cd056e9da09c28a16c5ac34d9ad8f7d94f17748c
