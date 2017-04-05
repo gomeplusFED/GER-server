@@ -10,7 +10,7 @@ let elasticsearch = require( 'elasticsearch' );
 let config = require( '../config.js' );
 
 let Router = express.Router();
-let client = new elasticsearch.Client( config.elasticsearch );
+let client = new elasticsearch.Client( config.elasticsearch() );
 module.exports = function () {
     let api = Array.prototype.concat( user, report );
     api.forEach( ( v ) => {

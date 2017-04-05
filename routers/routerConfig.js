@@ -45,10 +45,9 @@ module.exports = function ( Router ) {
             };
             userList( function ( result ) {
                 if ( result.code === 200 ) {
-                    data.watchUrl = result.data[ data.userName ].watchUrl.replace( /[/\r|\/n|/\r/\n]/g, '^' );
+                    data.watchUrl = result.data[ data.userName ].watchUrl.replace( /[/\r|/\r/\n]/g, '^' );
                     data.isReaded = true;
                     res.render( 'index', data );
-
                 } else {
                     data.isReaded = false;
                 }

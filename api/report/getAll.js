@@ -11,6 +11,7 @@ var getSearhBody = function ( v, d, i, j ) {
         "gte": "now-" + parseInt( d ) + "d/d",
         "lte": "now/d"
     };
+    console.log( timestamp );
     if ( i === 0 ) {
         timestamp = {
             "gt": "now-1d/d"
@@ -75,7 +76,7 @@ var getSearhBody = function ( v, d, i, j ) {
 module.exports = function ( req, res ) {
     let client = this;
     let itemNum = req.body.size || 10;
-    let from = ( req.body.pageNum - 1 ) * itemNum;
+    let from = ( req.body.page - 1 ) * itemNum;
     let watchUrl = req.body.watchUrl;
     let search = [];
     let days = [ 0, 7, 15, 15 ];
@@ -90,6 +91,7 @@ module.exports = function ( req, res ) {
             } );
         } );
         //console.log(search);
+        console.log( itemNum, from );
         client.msearch( {
             size: itemNum,
             from: from,

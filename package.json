@@ -11,7 +11,7 @@
     "beautify": "node ./beatufyjs.js routers middleware  api ",
     "StaticDev": "cd public/GER-UI/ && npm run dev",
     "ServerDev": "supervisor app.js",
-    "start":"npm-run-all --parallel StaticDev ServerDev"
+    "start": "npm-run-all --parallel StaticDev ServerDev"
   },
   "config": {
     "pre-git": {
@@ -47,6 +47,8 @@
     "supervisor": "^0.12.0"
   },
   "dependencies": {
-    "body-parser": "^1.17.1"
+    "body-parser": "^1.17.1",
+    "moment": "^2.18.1",
+    "uuid": "^3.0.1"
   }
 }
