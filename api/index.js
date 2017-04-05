@@ -7,13 +7,10 @@ let express = require( 'express' );
 let user = require( './user' );
 let report = require( './report' );
 let elasticsearch = require( 'elasticsearch' );
+let config = require( '../config.js' );
 
 let Router = express.Router();
-let client = new elasticsearch.Client( {
-    host: '10.125.137.44:9200', //线上
-    //host: '10.69.205.21:9201',   //pre
-    log: 'error'
-} );
+let client = new elasticsearch.Client( config.elasticsearch );
 module.exports = function () {
     let api = Array.prototype.concat( user, report );
     api.forEach( ( v ) => {

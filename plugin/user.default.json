@@ -1,0 +1,16 @@
+{
+    "admin": {
+        "name": "admin",
+        "time": "2017-03-20",
+        "password": "12345678",
+        "watchUrl": "",
+        "child": ["test"]
+    },
+    "test": {
+        "name": "test",
+        "password": "12345678",
+        "time": "2017-03-20",
+        "watchUrl": "",
+        "parent": "admin"
+    }
+}
