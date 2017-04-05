@@ -7,7 +7,7 @@ let express = require( 'express' );
 let user = require( './user' );
 let report = require( './report' );
 let elasticsearch = require( 'elasticsearch' );
-let config = require( '../config.js' );
+let config = require( '../config.default.js' );
 
 let Router = express.Router();
 let client = new elasticsearch.Client( config.elasticsearch );
