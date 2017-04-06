@@ -27,6 +27,7 @@ module.exports = function ( req, res, next ) {
             params[ item[ 0 ] ] = item[ 1 ];
         } );
         var timestamp = moment().format();
+        var request_time = moment().format( 'YYYY-MM-DD hh:mm:ss' );
         console.log( timestamp );
         client.create( {
             index: 'logstash-web_access' + indexDate,
@@ -35,6 +36,7 @@ module.exports = function ( req, res, next ) {
             body: {
                 project_name: "JS",
                 '@timestamp': timestamp,
+                request_time: request_time,
                 message: {
                     log_master: 'js',
                     msg: params.msg,
