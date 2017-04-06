@@ -1,8 +1,6 @@
 # GER
 
 ---
-
----
 GER server,借助ElasticSearch可以帮你快速搭建起你的前端监控系统。
 
 ---
@@ -21,7 +19,10 @@ GER server,借助ElasticSearch可以帮你快速搭建起你的前端监控系�
 curl -L -O http://download.elasticsearch.org/PATH/TO/VERSION.zip <1>
 unzip elasticsearch-$VERSION.zip
 cd  elasticsearch-$VERSION
+./bin/elasticsearch 
 ```
+
+下载完毕后可直接启动。
 
 安装入门指南：(无需安装Marvel)
 https://es.xiaoleilu.com/010_Intro/10_Installing_ES.html
@@ -44,8 +45,4 @@ cp plugin/user.default.json plugin/user.json
 npm start
 ```
 
-修改elasticsearch的配置和用户配置后启动。
-
-
-
-
+修改elasticsearch的配置和用户配置后启动,之后通过浏览器 http://127.0.0.1:8888/ 访问系统即可。
