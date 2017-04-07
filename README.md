@@ -31,7 +31,7 @@ https://es.xiaoleilu.com/010_Intro/10_Installing_ES.html
 
 ```bash
 git clone https://github.com/gomeplusFED/GER-server.git
-git submodule update
+git submodule init && git submodule update
 npm install -d && cd public/GER-UI/ && npm install -d
 ```
 
