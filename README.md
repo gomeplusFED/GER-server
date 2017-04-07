@@ -44,5 +44,10 @@ cp config.default.js config.js
 cp plugin/user.default.json plugin/user.json
 npm start
 ```
+如果你使用pm2启动服务，可以这样：
+
+```js
+pm2 start "/usr/local/bin/npm" --name "GER" -- start
+```
 
 修改elasticsearch的配置和用户配置后启动,之后通过浏览器 http://127.0.0.1:8888/ 访问系统即可。
