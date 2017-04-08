@@ -74,10 +74,13 @@ var getSearhBody = ( reqBody ) => {
 module.exports = function ( req, res ) {
     let client = this;
     let reqBody = req.body;
+    let items = 5;
     //数据条数
-    let itemNum = reqBody.size || 5;
+    // let itemNum = reqBody.size || items;
+    let itemNum = 0;
     //开始位置
-    let from = ( reqBody.pageNum - 1 ) * itemNum;
+    // let from = ( reqBody.pageNum - 1 ) * itemNum;
+    let from = 0;
     let localRegexp = replacePoint( reqBody.local );
     let orderByNumber = reqBody.order === 'type' ? true : false;
     client.search( {
@@ -85,92 +88,108 @@ module.exports = function ( req, res ) {
         from: from,
         index: 'logstash-web_access*',
         body: getSearhBody( reqBody )
-    } ).then( results => {
-        let bucketsKeys = [];
-        let bucketsCounts = [];
+    } ).then( results1 => {
+        itemNum = results1.hits.total;
+        client.search( {
+            size: itemNum,
+            from: from,
+            index: 'logstash-web_access*',
+            body: getSearhBody( reqBody )
+        } ).then( results => {
+            let bucketsKeys = [];
+            let bucketsCounts = [];
 
-        let errorNumSearch = [];
-        results.aggregations.type.buckets.forEach( ( v, i ) => {
+            let errorNumSearch = [];
+            results.aggregations.type.buckets.forEach( ( v, i ) => {
+                if ( orderByNumber ) {
+                    errorNumSearch.push( {
+                        "filter": {
+                            "term": {
+                                "message.msg.raw": v.key
+                            }
+                        },
+                        "weight": 1000 - i
+                    } );
+                }
+                bucketsKeys.push( v.key );
+                bucketsCounts.push( v.doc_count );
+            } );
             if ( orderByNumber ) {
-                errorNumSearch.push( {
-                    "filter": {
-                        "term": {
-                            "message.msg.raw": v.key
-                        }
-                    },
-                    "weight": 1000 - i
-                } );
-            }
-            bucketsKeys.push( v.key );
-            bucketsCounts.push( v.doc_count );
-        } );
-        if ( orderByNumber ) {
-            client.search( {
-                size: itemNum,
-                from: 0,
-                index: 'logstash-web_access*',
-                body: {
-                    "query": {
-                        "function_score": {
-                            "query": {
-                                "bool": {
-                                    "must": [ {
+                client.search( {
+                    size: itemNum,
+                    from: 0,
+                    index: 'logstash-web_access*',
+                    body: {
+                        "query": {
+                            "function_score": {
+                                "query": {
+                                    "bool": {
+                                        "must": [ {
 
-                                        "regexp": {
-                                            "message.host": localRegexp
-                                        }
-                                    } ]
-                                }
-                            },
-                            "functions": errorNumSearch,
-                            "score_mode": "first"
+                                            "regexp": {
+                                                "message.host": localRegexp
+                                            }
+                                        } ]
+                                    }
+                                },
+                                "functions": errorNumSearch,
+                                "score_mode": "first"
 
+                            }
                         }
                     }
-                }
-            } ).then( data => {
+                } ).then( data => {
+                    res.status( 200 ).json( {
+                        code: 200,
+                        message: '成功',
+                        data: {
+                            results: data.hits.hits,
+                            total: data.hits.total,
+                            buckets: {
+                                keys: bucketsKeys,
+                                counts: bucketsCounts
+                            },
+                            page: {
+                                pages: Math.ceil( data.hits.total / itemNum ),
+                                currentPage: parseInt(reqBody.pageNum),
+                                froms: ( reqBody.pageNum - 1 ) * itemNum
+                            }
+                        }
+                    } );
+                }, data => {
+                    res.status( 200 ).json( {
+                        code: 424,
+                        data: data,
+                        message: '获取失败'
+                    } );
+                } );
+            } else {
                 res.status( 200 ).json( {
                     code: 200,
                     message: '成功',
                     data: {
-                        results: data.hits.hits,
-                        total: data.hits.total,
+                        results: results.hits.hits,
+                        total: results.hits.total,
                         buckets: {
                             keys: bucketsKeys,
                             counts: bucketsCounts
                         },
                         page: {
-                            pages: Math.ceil( data.hits.total / itemNum ),
-                            currentPage: reqBody.pageNum
+                            pages: Math.ceil( results.hits.total / items ),
+                            currentPage: reqBody.pageNum,
+                            froms: ( reqBody.pageNum - 1 ) * items
                         }
                     }
                 } );
-            }, data => {
-                res.status( 200 ).json( {
-                    code: 424,
-                    data: data,
-                    message: '获取失败'
-                } );
-            } );
-        } else {
-            res.status( 200 ).json( {
-                code: 200,
-                message: '成功',
-                data: {
-                    results: results.hits.hits,
-                    total: results.hits.total,
-                    buckets: {
-                        keys: bucketsKeys,
-                        counts: bucketsCounts
-                    },
-                    page: {
-                        pages: Math.ceil( results.hits.total / itemNum ),
-                        currentPage: reqBody.pageNum
-                    }
-                }
-            } );
 
-        }
+            }
+        }, results => {
+            res.status( 200 ).json( {
+                code: 424,
+                data: results,
+                message: '获取失败'
+            } );
+        } );
     }, results => {
         res.status( 200 ).json( {
             code: 424,
