@@ -88,8 +88,8 @@ module.exports = function ( req, res ) {
         from: from,
         index: 'logstash-web_access*',
         body: getSearhBody( reqBody )
-    } ).then( results1 => {
-        itemNum = results1.hits.total;
+    } ).then( resWrap => {
+        itemNum = resWrap.hits.total;
         client.search( {
             size: itemNum,
             from: from,
@@ -150,9 +150,9 @@ module.exports = function ( req, res ) {
                                 counts: bucketsCounts
                             },
                             page: {
-                                pages: Math.ceil( data.hits.total / itemNum ),
+                                pages: Math.ceil( data.hits.total / items ),
                                 currentPage: parseInt(reqBody.pageNum),
-                                froms: ( reqBody.pageNum - 1 ) * itemNum
+                                froms: ( reqBody.pageNum - 1 ) * items
                             }
                         }
                     } );
@@ -176,7 +176,7 @@ module.exports = function ( req, res ) {
                         },
                         page: {
                             pages: Math.ceil( results.hits.total / items ),
-                            currentPage: reqBody.pageNum,
+                            currentPage: parseInt(reqBody.pageNum),
                             froms: ( reqBody.pageNum - 1 ) * items
                         }
                     }
