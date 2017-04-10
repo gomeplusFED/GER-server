@@ -6,11 +6,19 @@
 var replacePoint = ( str ) => {
     return '.*' + str.replace( /\./g, "\." ) + '.*';
 };
+var getTimeRange = (reqBody) => {
+    //搜索期限
+    let lastDays = reqBody.lastDays || 1;
+    return lastDays === 1 ? {
+            "gt": "now-1d/d"
+        } : {
+            "gte": "now-" + parseInt( lastDays ) + "d/d",
+            "lte": "now/d"
+        };
+};
 var getSearhBody = ( reqBody ) => {
     //搜索域名
     let local = reqBody.local;
-    //搜索期限
-    let lastDays = reqBody.lastDays || 1;
     //搜索类型
     let searchType = reqBody.type || '';
     //搜索关键词
@@ -35,22 +43,13 @@ var getSearhBody = ( reqBody ) => {
             }
         } );
     }
-    let timestamp = {
-        "gte": "now-" + parseInt( lastDays ) + "d/d",
-        "lte": "now/d"
-    };
-    if ( lastDays === 1 ) {
-        timestamp = {
-            "gt": "now-1d/d"
-        };
-    }
     let searchBody = {
         "query": {
             "bool": {
                 "must": mustSearch,
                 "filter": {
                     "range": {
-                        "@timestamp": timestamp
+                        "@timestamp": getTimeRange(reqBody)
                     }
                 }
             }
@@ -76,11 +75,10 @@ module.exports = function ( req, res ) {
     let reqBody = req.body;
     let items = 5;
     //数据条数
-    // let itemNum = reqBody.size || items;
-    let itemNum = 0;
+    let itemNum = reqBody.size || items;
     //开始位置
-    // let from = ( reqBody.pageNum - 1 ) * itemNum;
-    let from = 0;
+    let from = ( reqBody.pageNum - 1 ) * itemNum;
+    //let from = 0;
     let localRegexp = replacePoint( reqBody.local );
     let orderByNumber = reqBody.order === 'type' ? true : false;
     client.search( {
@@ -125,11 +123,20 @@ module.exports = function ( req, res ) {
                                 "query": {
                                     "bool": {
                                         "must": [ {
-
                                             "regexp": {
                                                 "message.host": localRegexp
+                                                }
+                                            },
+                                            {
+                                                "match": {
+                                                    "message.log_master": "js"
+                                                }
+                                        }],
+                                        "filter": {
+                                            "range": {
+                                                "@timestamp": getTimeRange(reqBody)
                                             }
-                                        } ]
+                                        }
                                     }
                                 },
                                 "functions": errorNumSearch,
