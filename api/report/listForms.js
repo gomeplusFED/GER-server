@@ -8,7 +8,6 @@ let utils = require( '../../plugin/utils' );
 module.exports = function ( req, res ) {
 	let client = this;
     let reqBody = req.body;
-    let localRegexp = utils.replacePoint( reqBody.local );
     client.search( {
         size: 0,
         from: 0,
