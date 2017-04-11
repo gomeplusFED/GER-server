@@ -4,7 +4,6 @@
  * @date 2017/03/03
  */
 module.exports = function ( req, res ) {
-    console.log( req.body );
     let client = this;
     client.search( {
         size: 10,

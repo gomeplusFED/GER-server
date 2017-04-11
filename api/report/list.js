@@ -42,7 +42,7 @@ module.exports = function ( req, res ) {
         if ( orderByNumber ) {
             client.search( {
                 size: itemNum,
-                from: 0,
+                from: from,
                 index: 'logstash-web_access*',
                 body: {
                     "query": {
