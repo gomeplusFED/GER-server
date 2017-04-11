@@ -3,96 +3,28 @@
  * @fileoverview api report/getAll.js
  * @date 2017/03/03
  */
-var replacePoint = ( str ) => {
-    return '.*' + str.replace( /\./g, "\." ) + '.*';
-};
-var getTimeRange = (reqBody) => {
-    //搜索期限
-    let lastDays = reqBody.lastDays || 1;
-    return lastDays === 1 ? {
-            "gt": "now-1d/d"
-        } : {
-            "gte": "now-" + parseInt( lastDays ) + "d/d",
-            "lte": "now/d"
-        };
-};
-var getSearhBody = ( reqBody ) => {
-    //搜索域名
-    let local = reqBody.local;
-    //搜索类型
-    let searchType = reqBody.type || '';
-    //搜索关键词
-    let searchKey = reqBody.keyWord || '';
 
-    let localRegexp = replacePoint( local );
-    let mustSearch = [ {
-            "regexp": {
-                "message.host": localRegexp
-            }
-        },
-        {
-            "match": {
-                "message.log_master": "js"
-            }
-        }
-    ];
-    if ( searchKey ) {
-        mustSearch.push( {
-            "regexp": {
-                [ searchType ]: replacePoint( searchKey )
-            }
-        } );
-    }
-    let searchBody = {
-        "query": {
-            "bool": {
-                "must": mustSearch,
-                "filter": {
-                    "range": {
-                        "@timestamp": getTimeRange(reqBody)
-                    }
-                }
-            }
-        },
-        "aggregations": {
-            "type": {
-                "terms": {
-                    "field": "message.msg.raw"
-                }
-
-            }
-        },
-        "sort": [ {
-            "@timestamp": {
-                "order": "desc" //asc正序(默认)    desc倒序
-            }
-        } ]
-    };
-    return searchBody;
-};
+let utils = require( '../../plugin/utils' );
 module.exports = function ( req, res ) {
     let client = this;
     let reqBody = req.body;
-    let items = 5;
     //数据条数
-    let itemNum = reqBody.size || items;
+    let itemNum = reqBody.size || 10;
     //开始位置
     let from = ( reqBody.pageNum - 1 ) * itemNum;
-    //let from = 0;
-    let localRegexp = replacePoint( reqBody.local );
+    let localRegexp = utils.replacePoint( reqBody.local );
     let orderByNumber = reqBody.order === 'type' ? true : false;
     client.search( {
         size: itemNum,
         from: from,
         index: 'logstash-web_access*',
-        body: getSearhBody( reqBody )
+        body: utils.getSearhBody( reqBody )
     } ).then( resWrap => {
-        itemNum = resWrap.hits.total;
         client.search( {
             size: itemNum,
             from: from,
             index: 'logstash-web_access*',
-            body: getSearhBody( reqBody )
+            body: utils.getSearhBody( reqBody )
         } ).then( results => {
             let bucketsKeys = [];
             let bucketsCounts = [];
@@ -134,13 +66,14 @@ module.exports = function ( req, res ) {
                                         }],
                                         "filter": {
                                             "range": {
-                                                "@timestamp": getTimeRange(reqBody)
+                                                "@timestamp": utils.getTimeRange(reqBody)
                                             }
                                         }
                                     }
                                 },
                                 "functions": errorNumSearch,
-                                "score_mode": "first"
+                                "score_mode": "first",
+                                "boost_mode": "replace"
 
                             }
                         }
@@ -157,9 +90,9 @@ module.exports = function ( req, res ) {
                                 counts: bucketsCounts
                             },
                             page: {
-                                pages: Math.ceil( data.hits.total / items ),
+                                pages: Math.ceil( data.hits.total / itemNum ),
                                 currentPage: parseInt(reqBody.pageNum),
-                                froms: ( reqBody.pageNum - 1 ) * items
+                                froms: ( reqBody.pageNum - 1 ) * itemNum
                             }
                         }
                     } );
@@ -182,9 +115,9 @@ module.exports = function ( req, res ) {
                             counts: bucketsCounts
                         },
                         page: {
-                            pages: Math.ceil( results.hits.total / items ),
+                            pages: Math.ceil( results.hits.total / itemNum ),
                             currentPage: parseInt(reqBody.pageNum),
-                            froms: ( reqBody.pageNum - 1 ) * items
+                            froms: ( reqBody.pageNum - 1 ) * itemNum
                         }
                     }
                 } );
