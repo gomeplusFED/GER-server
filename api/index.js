@@ -8,7 +8,6 @@ let user = require( './user' );
 let report = require( './report' );
 let elasticsearch = require( 'elasticsearch' );
 let config = require( '../config.js' );
-
 let Router = express.Router();
 let client = new elasticsearch.Client( config.elasticsearch() );
 module.exports = function () {

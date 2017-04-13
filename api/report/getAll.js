@@ -11,7 +11,6 @@ var getSearhBody = function ( v, d, i, j ) {
         "gte": "now-" + parseInt( d ) + "d/d",
         "lte": "now/d"
     };
-    console.log( timestamp );
     if ( i === 0 ) {
         timestamp = {
             "gt": "now-1d/d"
@@ -90,14 +89,11 @@ module.exports = function ( req, res ) {
                 search.push( getSearhBody( v, d, i, j ) );
             } );
         } );
-        //console.log(search);
-        console.log( itemNum, from );
         client.msearch( {
             size: itemNum,
             from: from,
             body: search
         } ).then( results => {
-            //console.log(JSON.stringify(results));
             let data = results.responses;
             let result = [];
             let child = {};
@@ -143,7 +139,11 @@ module.exports = function ( req, res ) {
                 originalData: results
             } );
         }, results => {
-            console.log( results );
+            res.status( 200 ).json( {
+                code: 424,
+                message: '获取失败',
+                originalData: results
+            } );
         } );
     } else {
         res.status( 200 ).json( {
