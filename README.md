@@ -22,10 +22,18 @@ cd  elasticsearch-$VERSION
 ./bin/elasticsearch 
 ```
 
+-d 参数可以让elasticsearch在后台执行
+
 下载完毕后可直接启动。
 
 安装入门指南：(无需安装Marvel)
 https://es.xiaoleilu.com/010_Intro/10_Installing_ES.html
+
+安装完毕后并启动，需要做一个template，执行下面命令即可。
+
+```
+curl -XPUT 127.0.0.1:9200/_template/template_1 -d '{"template":"logstash-web_access*","mappings":{"logs":{"properties":{"@timestamp":{"type":"date"}}}}}'
+```
 
 ### 安装GER-server
 
