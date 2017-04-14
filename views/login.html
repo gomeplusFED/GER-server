@@ -24,6 +24,10 @@
         <% if(flash.errorMsg) { %>  
             <span class="error_tips"><%= flash.errorMsg %></span>
         <% } %> 
+
+        <% if(originUrl !== ''){ %>  
+            <input type="hidden" name="originUrl" value=<%= originUrl %>>
+        <% } %> 
     	<div>
     		<button type="submit">登录</button>
     	</div>
