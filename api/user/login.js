@@ -7,6 +7,7 @@
 let userList = require( '../../plugin/readUserList' );
 
 const doLogin = ( req, res, name, pwd ) => {
+    let originUrl = req.body.originUrl;
     userList( ( data ) => {
         if ( data.code === 200 ) {
             let user = data.data[ name ];
@@ -15,10 +16,12 @@ const doLogin = ( req, res, name, pwd ) => {
                 req.session.superName = ( user.child ? name : user.parent );
                 req.session.isLogin = true;
                 req.session.isSuper = ( user.child ? true : false );
-                res.redirect( '/index' );
+                let url = originUrl ? '/index?originUrl=' + encodeURIComponent(originUrl) : '/index';
+                res.redirect( url );
             } else {
                 req.flash( 'errorMsg', '账号或密码无效，请重试！' );
-                res.redirect( '/login' );
+                let url = originUrl ? '/login?originUrl=' + encodeURIComponent(originUrl) : '/login';
+                res.redirect( url );
             }
         } else {
             res.status( 200 ).json( {
