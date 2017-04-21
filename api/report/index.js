@@ -27,10 +27,11 @@ module.exports = [ {
         router: '/report/getForms',
         type: 'post',
         apiToDo: forms
-    }/*,
-    {
-        router: '/report/getRealPlace',
-        type: 'post',
-        apiToDo: place
-    }*/
+    }
+    /*,
+        {
+            router: '/report/getRealPlace',
+            type: 'post',
+            apiToDo: place
+        }*/
 ];

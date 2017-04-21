@@ -14,7 +14,7 @@ module.exports = function ( req, res ) {
     let from = ( reqBody.pageNum - 1 ) * itemNum;
     let localRegexp = utils.replacePoint( reqBody.local );
     let orderByNumber = reqBody.order === 'type' ? true : false;
-    
+
     client.search( {
         size: itemNum,
         from: from,
@@ -50,18 +50,19 @@ module.exports = function ( req, res ) {
                             "query": {
                                 "bool": {
                                     "must": [ {
-                                        "regexp": {
-                                            "message.host": localRegexp
+                                            "regexp": {
+                                                "message.host": localRegexp
                                             }
                                         },
                                         {
                                             "match": {
                                                 "message.log_master": "js"
                                             }
-                                    }],
+                                        }
+                                    ],
                                     "filter": {
                                         "range": {
-                                            "@timestamp": utils.getTimeRange(reqBody)
+                                            "@timestamp": utils.getTimeRange( reqBody )
                                         }
                                     }
                                 }
@@ -86,7 +87,7 @@ module.exports = function ( req, res ) {
                         },
                         page: {
                             pages: Math.ceil( data.hits.total / itemNum ),
-                            currentPage: parseInt(reqBody.pageNum),
+                            currentPage: parseInt( reqBody.pageNum ),
                             froms: ( reqBody.pageNum - 1 ) * itemNum
                         }
                     }
@@ -111,7 +112,7 @@ module.exports = function ( req, res ) {
                     },
                     page: {
                         pages: Math.ceil( results.hits.total / itemNum ),
-                        currentPage: parseInt(reqBody.pageNum),
+                        currentPage: parseInt( reqBody.pageNum ),
                         froms: ( reqBody.pageNum - 1 ) * itemNum
                     }
                 }

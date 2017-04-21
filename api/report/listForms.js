@@ -6,7 +6,7 @@
 
 let utils = require( '../../plugin/utils' );
 module.exports = function ( req, res ) {
-	let client = this;
+    let client = this;
     let reqBody = req.body;
     client.search( {
         size: 0,
@@ -14,11 +14,11 @@ module.exports = function ( req, res ) {
         index: 'logstash-web_access*',
         body: utils.getSearhBody( reqBody )
     } ).then( resWrap => {
-    	res.status(200).json({
-    		code: 200,
-    		message: '成功',
-    		data: resWrap
-    	});
+        res.status( 200 ).json( {
+            code: 200,
+            message: '成功',
+            data: resWrap
+        } );
     }, results => {
         res.status( 200 ).json( {
             code: 424,

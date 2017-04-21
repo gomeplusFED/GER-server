@@ -16,11 +16,11 @@ const doLogin = ( req, res, name, pwd ) => {
                 req.session.superName = ( user.child ? name : user.parent );
                 req.session.isLogin = true;
                 req.session.isSuper = ( user.child ? true : false );
-                let url = originUrl ? '/index?originUrl=' + encodeURIComponent(originUrl) : '/index';
+                let url = originUrl ? '/index?originUrl=' + encodeURIComponent( originUrl ) : '/index';
                 res.redirect( url );
             } else {
                 req.flash( 'errorMsg', '账号或密码无效，请重试！' );
-                let url = originUrl ? '/login?originUrl=' + encodeURIComponent(originUrl) : '/login';
+                let url = originUrl ? '/login?originUrl=' + encodeURIComponent( originUrl ) : '/login';
                 res.redirect( url );
             }
         } else {

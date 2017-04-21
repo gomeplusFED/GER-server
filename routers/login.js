@@ -9,9 +9,9 @@ module.exports = function ( Router ) {
         if ( req.session.isLogin ) {
             res.redirect( '/index' );
         } else {
-            res.render( 'login' , {
-                originUrl: req.query.originUrl?encodeURIComponent(req.query.originUrl): ''
-            });
+            res.render( 'login', {
+                originUrl: req.query.originUrl ? encodeURIComponent( req.query.originUrl ) : ''
+            } );
         }
     } );
 
@@ -20,7 +20,7 @@ module.exports = function ( Router ) {
         if ( req.session.isLogin ) {
             next();
         } else {
-            let url = '/login?originUrl=' + encodeURIComponent(req.originalUrl);
+            let url = '/login?originUrl=' + encodeURIComponent( req.originalUrl );
             res.redirect( url );
         }
     } );
