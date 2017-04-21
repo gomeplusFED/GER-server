@@ -6,3 +6,4 @@
 node_modules/*
 vendor
 config.js
+api/report/test.js
