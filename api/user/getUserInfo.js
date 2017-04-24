@@ -4,24 +4,33 @@
  * @date 2017/03/03
  */
 
-let userList = require( '../../plugin/readUserList' );
+let readFile = require( '../../plugin/readFile' );
 module.exports = function ( req, res ) {
     let userName = req.body.userName;
-    userList( function ( result ) {
-        let users = result.data;
+    readFile( './user.json', ( err, data ) => {
+        if(err){
 
-        //获取子账号
-        if ( users[ userName ] ) {
-            res.status( 200 ).json( {
-                code: 200,
-                messsage: '获取成功',
-                data: users[ userName ]
-            } );
-        } else {
             res.status( 200 ).json( {
                 code: 424,
-                messsage: '查无此人'
+                messsage: '读取失败'
             } );
+        }else{
+
+            let users = JSON.parse(data);
+
+            //获取子账号
+            if ( users[ userName ] ) {
+                res.status( 200 ).json( {
+                    code: 200,
+                    messsage: '获取成功',
+                    data: users[ userName ]
+                } );
+            } else {
+                res.status( 200 ).json( {
+                    code: 424,
+                    messsage: '查无此人'
+                } );
+            } 
         }
 
     } );

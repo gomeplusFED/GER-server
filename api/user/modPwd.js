@@ -4,24 +4,24 @@
  * @date 2017/03/03
  */
 
-let userList = require( '../../plugin/readUserList' );
-let editUserList = require( '../../plugin/writeUserList' );
+let userList = require( '../../plugin/readFile' );
+let editFile = require( '../../plugin/writeFile' );
 module.exports = function ( req, res ) {
     let body = req.body;
     let userName = body.userName;
     let password = body.pwd;
     let users = '';
-    userList( function ( result ) {
-        if ( result.code === 200 ) {
-            users = result.data;
-            users[ userName ].password = password;
-        } else {
+    userList( './user.json', ( err, data ) => {
+        if( err ){
             res.status( 200 ).json( {
                 code: 424,
                 message: '文件读取失败，请重试！'
             } );
+        }else{
+            users = JSON.parse(data);
+            users[ userName ].password = password;
         }
-        editUserList( JSON.stringify( users ), ( response ) => {
+        editFile( './user.json', JSON.stringify( users ), ( response ) => {
             if ( response.code === 200 ) {
                 res.status( 200 ).json( {
                     code: 200,
