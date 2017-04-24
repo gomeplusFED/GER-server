@@ -48,10 +48,18 @@ module.exports = function ( Router ) {
                 if( err ){
                     data.isReaded = false;
                 }else{
-                    let result = JSON.parse(userData);
-                    data.watchUrl = result[ data.userName ].watchUrl.replace( /[/\r|/\r/\n]/g, '^' );
-                    data.isReaded = true;
-                    res.render( 'index', data );
+                    readFile('./version.json', (error, versionDate) => {
+                        if(error){
+                            data.version = +new Date();
+                        }else{
+                            data.version = versionDate;
+                        }
+
+                        let result = JSON.parse(userData);
+                        data.watchUrl = result[ data.userName ].watchUrl.replace( /[/\r|/\r/\n]/g, '^' );
+                        data.isReaded = true;
+                        res.render( 'index', data );
+                    });
                 }
             } );
 
