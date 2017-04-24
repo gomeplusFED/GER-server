@@ -3,7 +3,7 @@
  * @fileoverview api user/edit.js
  * @date 2017/03/03
  */
-
+let dateFormat = require('dateformat');
 let userList = require( '../../plugin/readFile' );
 let editFile = require( '../../plugin/writeFile' );
 module.exports = function ( req, res ) {
@@ -15,7 +15,6 @@ module.exports = function ( req, res ) {
     let type = body.type;
     //superName === userName  //编辑管理员
     //superName !== usserName //编辑子账号
-    //var createTime = data.createTime;
     userList( './user.json',( err, data ) => {
         if( err ){
             
@@ -42,7 +41,7 @@ module.exports = function ( req, res ) {
                     users[ userName ] = {
                         name: userName,
                         password: password,
-                        time: '2017-03-20',
+                        time: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss'),
                         watchUrl: watchUrl,
                         parent: superName
                     };
