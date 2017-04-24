@@ -6,4 +6,8 @@
 node_modules/*
 vendor
 config.js
+<<<<<<< HEAD
 api/report/test.js
+=======
+plugin/user.json
+>>>>>>> 6e89f6778cf0ab5d62dd58f06d96154620568ccf
