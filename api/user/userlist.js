@@ -3,14 +3,19 @@
  * @fileoverview api  login.js
  * @date 2017/03/03
  */
-let userList = require( '../../plugin/readUserList' );
+let readFile = require( '../../plugin/readFile' );
 module.exports = function ( req, res ) {
     let userName = req.body.superName;
     let page = parseInt( req.body.page, 10 );
     let size = req.body.size || 10;
-    userList( function ( data ) {
-        if ( data.code === 200 ) {
-            let lists = data.data;
+    readFile( './user.json', ( err, data ) => {
+        if(err){
+            res.status( 200 ).json( {
+                code: '424',
+                message: '读取失败！'
+            } );
+        }else{
+            let lists = JSON.parse(data);
             let children = lists[ userName ].child;
             let pageSize = Math.ceil( children.length / size );
             let childList = [];
@@ -34,11 +39,6 @@ module.exports = function ( req, res ) {
                 } );
 
             }
-        } else {
-            res.status( 200 ).json( {
-                code: '424',
-                message: '读取失败！'
-            } );
         }
     } );
 

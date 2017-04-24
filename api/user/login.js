@@ -4,13 +4,18 @@
  * @date 2017/03/03
  */
 
-let userList = require( '../../plugin/readUserList' );
+let readFile = require( '../../plugin/readFile' );
 
 const doLogin = ( req, res, name, pwd ) => {
     let originUrl = req.body.originUrl;
-    userList( ( data ) => {
-        if ( data.code === 200 ) {
-            let user = data.data[ name ];
+    readFile( './user.json', (err, data) => {
+        if(err){
+            res.status( 200 ).json( {
+                code: '424',
+                message: '读取失败！'
+            } );
+        }else{
+            let user = JSON.parse(data)[ name ];
             if ( user && user.password === pwd ) {
                 req.session.userName = name;
                 req.session.superName = ( user.child ? name : user.parent );
@@ -23,12 +28,7 @@ const doLogin = ( req, res, name, pwd ) => {
                 let url = originUrl ? '/login?originUrl=' + encodeURIComponent( originUrl ) : '/login';
                 res.redirect( url );
             }
-        } else {
-            res.status( 200 ).json( {
-                code: '424',
-                message: '读取失败！'
-            } );
-        }
+        } 
     } );
 
 };
@@ -42,17 +42,6 @@ module.exports = function ( req, res, next ) {
         var pwd = reqBody.passWord;
         if ( name && pwd ) {
             doLogin( req, res, name, pwd );
-            /*if( userList[name] && userList[name].password === pwd ){
-            	req.session.userName = name;
-            	req.session.isLogin = true;
-            	req.session.character = userList[name].character;
-            	res.redirect('/index');
-
-
-            }else{
-            	req.flash('errorMsg', '账号或密码无效，请重试！');
-            	res.redirect('/login');
-            }*/
         } else {
             req.session.loginError = '账号或密码无效，请重试！';
             res.redirect( '/login' );

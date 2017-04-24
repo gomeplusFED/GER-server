@@ -3,7 +3,7 @@
  * @fileoverview routers user.js
  * @date 2017/02/22
  */
-let userList = require( '../plugin/readUserList' );
+let readFile = require( '../plugin/readFile' );
 module.exports = function ( Router ) {
     let user = [ {
         router: '/index',
@@ -34,22 +34,24 @@ module.exports = function ( Router ) {
     let routers = Array.prototype.concat( user, report );
     routers.forEach( ( v ) => {
         Router[ v.type ]( v.router, function ( req, res ) {
-
+            
             let data = {
                 isLogin: req.session.isLogin,
                 isSuper: req.session.isSuper,
                 userName: req.session.userName,
                 superName: req.session.superName,
                 isReaded: false,
-                watchUrl: ''
+                watchUrl: '',
+                version: +new Date()
             };
-            userList( function ( result ) {
-                if ( result.code === 200 ) {
-                    data.watchUrl = result.data[ data.userName ].watchUrl.replace( /[/\r|/\r/\n]/g, '^' );
+            readFile( './user.json', (err, userData ) => {
+                if( err ){
+                    data.isReaded = false;
+                }else{
+                    let result = JSON.parse(userData);
+                    data.watchUrl = result[ data.userName ].watchUrl.replace( /[/\r|/\r/\n]/g, '^' );
                     data.isReaded = true;
                     res.render( 'index', data );
-                } else {
-                    data.isReaded = false;
                 }
             } );
 
