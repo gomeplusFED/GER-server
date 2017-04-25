@@ -6,7 +6,7 @@
 let readFile = require( '../../plugin/readFile' );
 module.exports = function ( req, res ) {
     let userName = req.body.superName;
-    let page = parseInt( req.body.page, 10 );
+    let page = parseInt( req.body.pageNum, 10 );
     let size = req.body.size || 10;
     readFile( './user.json', ( err, data ) => {
         if(err){
@@ -28,6 +28,10 @@ module.exports = function ( req, res ) {
                 res.status( 200 ).json( {
                     code: 200,
                     message: '获取成功！',
+                    page: {
+                        pages: pageSize,
+                        currentPage: page
+                    },
                     data: childList.slice( ( page - 1 ) * size, size * page ) || []
                 } );
             } else {
@@ -35,6 +39,10 @@ module.exports = function ( req, res ) {
                 res.status( 200 ).json( {
                     code: 200,
                     message: '获取成功！',
+                    page: {
+                        pages: pageSize,
+                        currentPage: page
+                    },
                     data: childList.slice( ( pageSize - 1 ) * size, size * pageSize )
                 } );
 
