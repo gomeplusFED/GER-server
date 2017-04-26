@@ -17,13 +17,15 @@ let utils = {
 	            "lte": "now/d"
 	        };
 	},
-	getSearhBody: ( reqBody, type ) => {
+	getSearhBody: ( reqBody ) => {
 	    //搜索域名
 	    let local = reqBody.local;
+	    //排序
+	    // let order = reqBody.order;
 	    //pc/mobile
 	    let typeDevice = reqBody.typeDevice;
 	    //搜索类型
-	    let searchType = type || '';
+	    let searchType = reqBody.type || '';
 	    //搜索关键词
 	    let searchKey = reqBody.keyWord || '';
 	    let localRegexp = utils.replacePoint( local );

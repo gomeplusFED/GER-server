@@ -13,6 +13,7 @@ module.exports = function ( req, res ) {
     //开始位置
     let from = ( reqBody.pageNum - 1 ) * itemNum;
     let localRegexp = utils.replacePoint( reqBody.local );
+    //pc/mobile
     let typeDevice = reqBody.typeDevice;
     let orderByNumber = reqBody.order === 'type' ? true : false;
 
@@ -20,7 +21,7 @@ module.exports = function ( req, res ) {
         size: itemNum,
         from: from,
         index: 'logstash-web_access*',
-        body: utils.getSearhBody( reqBody, typeDevice )
+        body: utils.getSearhBody( reqBody )
     } ).then( results => {
         let bucketsKeys = [];
         let bucketsCounts = [];
@@ -41,40 +42,48 @@ module.exports = function ( req, res ) {
             bucketsCounts.push( v.doc_count );
         } );
         if ( orderByNumber ) {
+            let body = {
+                "query": {
+                    "function_score": {
+                        "query": {
+                            "bool": {
+                                "must": [ {
+                                        "regexp": {
+                                            "message.host": localRegexp
+                                        }
+                                    },
+                                    {
+                                        "match": {
+                                            "message.log_master": "js"
+                                        }
+                                    }
+                                ],
+                                "filter": {
+                                    "range": {
+                                        "@timestamp": utils.getTimeRange( reqBody )
+                                    }
+                                }
+                            }
+                        },
+                        "functions": errorNumSearch,
+                        "score_mode": "first",
+                        "boost_mode": "replace"
+
+                    }
+                }
+            };
+            if(typeDevice && typeDevice !== 'all'){
+                body.query.function_score.query.bool.must.push( {
+                    "match": {
+                        "message.projectType": typeDevice
+                    }
+                } );
+            }
             client.search( {
                 size: itemNum,
                 from: from,
                 index: 'logstash-web_access*',
-                body: {
-                    "query": {
-                        "function_score": {
-                            "query": {
-                                "bool": {
-                                    "must": [ {
-                                            "regexp": {
-                                                "message.host": localRegexp
-                                            }
-                                        },
-                                        {
-                                            "match": {
-                                                "message.log_master": "js"
-                                            }
-                                        }
-                                    ],
-                                    "filter": {
-                                        "range": {
-                                            "@timestamp": utils.getTimeRange( reqBody )
-                                        }
-                                    }
-                                }
-                            },
-                            "functions": errorNumSearch,
-                            "score_mode": "first",
-                            "boost_mode": "replace"
-
-                        }
-                    }
-                }
+                body: body
             } ).then( data => {
                 res.status( 200 ).json( {
                     code: 200,
