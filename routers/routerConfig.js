@@ -56,7 +56,7 @@ module.exports = function ( Router ) {
                         }
 
                         let result = JSON.parse(userData);
-                        data.watchUrl = result[ data.userName ].watchUrl.replace( /[/\r|/\r/\n]/g, '^' );
+                        data.watchUrl = result[ data.userName ].watchUrl.replace( /[\r\n]/g, '^' );
                         data.isReaded = true;
                         res.render( 'index', data );
                     });

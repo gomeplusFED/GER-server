@@ -17,11 +17,13 @@ let utils = {
 	            "lte": "now/d"
 	        };
 	},
-	getSearhBody: ( reqBody ) => {
+	getSearhBody: ( reqBody, type ) => {
 	    //搜索域名
 	    let local = reqBody.local;
+	    //pc/mobile
+	    let typeDevice = reqBody.typeDevice;
 	    //搜索类型
-	    let searchType = reqBody.type || '';
+	    let searchType = type || '';
 	    //搜索关键词
 	    let searchKey = reqBody.keyWord || '';
 	    let localRegexp = utils.replacePoint( local );
@@ -40,6 +42,13 @@ let utils = {
 	        mustSearch.push( {
 	            "regexp": {
 	                [ searchType ]: utils.replacePoint( searchKey )
+	            }
+	        } );
+	    }
+	    if(typeDevice && typeDevice !== 'all'){
+	        mustSearch.push( {
+	            "match": {
+	                "message.projectType": typeDevice
 	            }
 	        } );
 	    }

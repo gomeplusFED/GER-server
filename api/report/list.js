@@ -13,13 +13,14 @@ module.exports = function ( req, res ) {
     //开始位置
     let from = ( reqBody.pageNum - 1 ) * itemNum;
     let localRegexp = utils.replacePoint( reqBody.local );
+    let typeDevice = reqBody.typeDevice;
     let orderByNumber = reqBody.order === 'type' ? true : false;
 
     client.search( {
         size: itemNum,
         from: from,
         index: 'logstash-web_access*',
-        body: utils.getSearhBody( reqBody )
+        body: utils.getSearhBody( reqBody, typeDevice )
     } ).then( results => {
         let bucketsKeys = [];
         let bucketsCounts = [];

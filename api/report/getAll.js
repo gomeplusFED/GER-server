@@ -3,9 +3,9 @@
  * @fileoverview api report/getAll.js
  * @date 2017/03/03
  */
-var getSearhBody = function ( v, d, i, j ) {
+var getSearhBody = function ( v, d, i, j, type ) {
 
-    let name = v + '|' + j + '|' + i;
+    let name = v + '|' + j + '|' + i + '^' + type;
     let regexp = '.*' + v.replace( /\./g, "\." ) + '.*';
     let timestamp = {
         "gte": "now-" + parseInt( d ) + "d/d",
@@ -19,7 +19,9 @@ var getSearhBody = function ( v, d, i, j ) {
     let searchBody = {
         "query": {
             "bool": {
-                "must": [ {
+                "must": 
+                [ 
+                    {
                         "regexp": {
                             "message.host": regexp
                         }
@@ -38,6 +40,14 @@ var getSearhBody = function ( v, d, i, j ) {
             }
         }
     };
+    //判断是否过滤pc/mobile
+    if(type !== 'all'){
+        searchBody.query.bool.must.push({
+            "match": {
+                "message.projectType": type
+            }
+        });
+    }
     //15天错误数/类型数/最高错误类型
     if ( i === 2 ) {
         searchBody.aggregations = {
@@ -86,7 +96,7 @@ module.exports = function ( req, res ) {
                 search.push( {
                     index: 'logstash-web_access*'
                 } );
-                search.push( getSearhBody( v, d, i, j ) );
+                search.push( getSearhBody( v.www, d, i, j, v.type ) );
             } );
         } );
         client.msearch( {
@@ -113,6 +123,7 @@ module.exports = function ( req, res ) {
                         item = Object.keys( agg )[ 0 ];
                         child[ keys[ i % 4 ] ] = v.hits.total;
                         child.local = item.split( '|' )[ 0 ];
+                        child.type = item.split( '^' )[ 1 ];
                         child.errorType = v.aggregations[ item ].buckets.length;
                         child.highError = child.errorType > 0 ? v.aggregations[ item ].buckets[ 0 ].key : '';
                     } else if ( i % 4 === 3 ) {
