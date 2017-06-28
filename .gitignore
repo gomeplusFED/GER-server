@@ -8,3 +8,4 @@ vendor
 config.js
 api/report/test.js
 plugin/user.json
+nginxconf.txt
