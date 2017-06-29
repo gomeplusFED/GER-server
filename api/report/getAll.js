@@ -41,7 +41,7 @@ var getSearhBody = function ( v, d, i, j, type ) {
         }
     };
     //判断是否过滤pc/mobile
-    if(type !== 'all'){
+    if(type !== 'ALL'){
         searchBody.query.bool.must.push({
             "match": {
                 "message.projectType": type
