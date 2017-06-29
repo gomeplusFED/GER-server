@@ -96,7 +96,7 @@ module.exports = function ( req, res ) {
                 search.push( {
                     index: 'logstash-web_access*'
                 } );
-                search.push( getSearhBody( v.www, d, i, j, v.type ) );
+                search.push( getSearhBody( v.www, d, i, j, v.type.toUpperCase() ) );
             } );
         } );
         client.msearch( {
