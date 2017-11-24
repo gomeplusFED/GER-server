@@ -4,13 +4,19 @@
         "time": "2017-03-20",
         "password": "12345678",
         "watchUrl": "",
-        "child": ["test"]
+        "child": ["test"],
+        "email": "",
+        "openEmail": false
+
     },
     "test": {
         "name": "test",
         "password": "12345678",
         "time": "2017-03-20",
         "watchUrl": "",
-        "parent": "admin"
+        "parent": "admin",
+        "email": "",
+        "openEmail": false
+
     }
 }

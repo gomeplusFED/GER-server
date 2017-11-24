@@ -99,6 +99,7 @@ module.exports = function ( req, res ) {
                 search.push( getSearhBody( v.www, d, i, j, v.type.toUpperCase() ) );
             } );
         } );
+        console.log(JSON.stringify(search));
         client.msearch( {
             size: itemNum,
             from: from,

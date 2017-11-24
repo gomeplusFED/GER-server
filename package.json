@@ -10,8 +10,9 @@
     "pretest": "jshint -c .jshintrc  routers middleware api",
     "beautify": "node ./beatufyjs.js routers middleware  api ",
     "StaticDev": "cd public/GER-UI/ && npm run dev",
+    "sendEmail": "node sendEmail.js",
     "ServerDev": "supervisor app.js",
-    "start": "npm-run-all --parallel StaticDev ServerDev"
+    "start": "npm-run-all --parallel StaticDev ServerDev sendEmail"
   },
   "config": {
     "pre-git": {
@@ -44,6 +45,8 @@
     "jshint": "^2.9.4",
     "lactate": "0.13.12",
     "multer": "^1.3.0",
+    "node-schedule": "^1.2.4",
+    "nodemailer": "^4.1.0",
     "npm-run-all": "^4.0.2",
     "path": "^0.12.7",
     "pre-git": "^3.13.0",
