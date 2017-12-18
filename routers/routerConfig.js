@@ -30,7 +30,10 @@ module.exports = function ( Router ) {
     }, {
         router: '/report',
         type: 'get'
-    } ];
+    } , {
+      router: '/reportSummary',
+      type: 'get'
+    }];
     let routers = Array.prototype.concat( user, report );
     routers.forEach( ( v ) => {
         Router[ v.type ]( v.router, function ( req, res ) {
