@@ -54,6 +54,7 @@
     "supervisor": "^0.12.0"
   },
   "dependencies": {
+		"econdary-cache":"1.2.1",
     "moment": "^2.18.1",
     "uuid": "^3.0.1"
   }
