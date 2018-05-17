@@ -98,13 +98,12 @@ module.exports = function(req, res) {
         search.push(getSearhBody(v.www, d, i, j, v.type.toUpperCase()));
       });
     });
-    console.log(JSON.stringify(search));
-    var search = {
+    var searchkey = {
       size: itemNum,
       from: from,
       body: search
     };
-    var key = JSON.stringify(search);
+    var key = JSON.stringify(searchkey);
     if (cache.has(key)) {
       var data = cache.get(key);
       res.status(200).json({
@@ -115,10 +114,9 @@ module.exports = function(req, res) {
       });
       return;
     }
-    client.msearch(search).then(results => {
+    client.msearch(searchkey).then(results => {
       let data = results.responses;
       let result = [];
-      let child = {};
       let agg = '';
       let item = '';
       //todayErrorNum => 今日错误数;
@@ -128,28 +126,31 @@ module.exports = function(req, res) {
       //local => 域名;
       //errorType => 15日错误类型数
       //highError => 15日最高错误类型;
+      var child = {};
       data.forEach((v, i) => {
+	var keyIndex = i % 4;
+	var name = keys[keyIndex];
         if (v.aggregations) {
-          if (i % 4 === 2) {
+          if (keyIndex === 2) {
             agg = v.aggregations;
             item = Object.keys(agg)[0];
-            child[keys[i % 4]] = v.hits.total;
+            child[name] = v.hits.total;
             child.local = item.split('|')[0];
             child.type = item.split('^')[1];
             child.errorType = v.aggregations[item].buckets.length;
             child.highError = child.errorType > 0 ? v.aggregations[item].buckets[0].key : '';
-          } else if (i % 4 === 3) {
+          } else if (keyIndex === 3) {
             agg = v.aggregations;
             item = Object.keys(agg)[0];
-            child[keys[i % 4]] = v.aggregations[item].buckets.length;
+            child[name] = v.aggregations[item].buckets.length;
           }
         } else {
-          child[keys[i % 4]] = v.hits.total;
+          child[name] = v.hits ? v.hits.total : 0;
         }
 
-        if (i % 4 === 3 && i !== 0) {
+        if (keyIndex === 3 && i !== 0) {
           result.push(child);
-          child = {};
+	  child = {};
         }
       });
       result = result.filter((item) => {
