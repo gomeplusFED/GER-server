@@ -30,6 +30,7 @@ module.exports = function ( req, res ) {
 function wrapSearchBody(body) {
   const range = body.lastDays ? utils.getTimeRange(body) : {}
   return {
+    "size": 186, // 最多返回半年的数据
     "query": {
       "range" : {
         "date" : range
