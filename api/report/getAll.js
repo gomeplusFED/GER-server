@@ -8,7 +8,6 @@ let cache = LRUCache(1000);
 
 var getSearhBody = function(v, d, i, j, type) {
 
-  let name = v + '|' + j + '|' + i + '^' + type;
   let regexp = '.*' + v.replace(/\./g, "\.") + '.*';
   let timestamp = {
     "gte": "now-" + parseInt(d) + "d/d",
@@ -47,37 +46,6 @@ var getSearhBody = function(v, d, i, j, type) {
       }
     });
   }
-  //15天错误数/类型数/最高错误类型
-  if (i === 2) {
-    searchBody.aggregations = {
-      [name]: {
-        "terms": {
-          "field": "message.msg.raw"
-        }
-      }
-    };
-
-    searchBody.sort = [{
-      "@timestamp": {
-        "order": "desc" //asc正序(默认)    desc倒序
-      }
-    }];
-  } else if (i === 3) {
-    //15天错误脚本数
-    searchBody.aggregations = {
-      [name]: {
-        "terms": {
-          "field": "message.targetUrl.raw"
-        }
-      }
-    };
-
-    searchBody.sort = [{
-      "@timestamp": {
-        "order": "desc" //asc正序(默认)    desc倒序
-      }
-    }];
-  }
   return searchBody;
 };
 
@@ -87,9 +55,10 @@ module.exports = function(req, res) {
   let from = (req.body.page - 1) * itemNum;
   let watchUrl = req.body.watchUrl;
   let search = [];
-  let days = [0, 7, 15, 15];
-  let keys = ['todayErrorNum', 'weekErrorNum', 'lastFifteenErrorNum', 'scriptErrorNum'];
+  let days = [0, 7];
+  let keys = ['todayErrorNum', 'weekErrorNum'];
   if (watchUrl) {
+    console.log(watchUrl);
     watchUrl.forEach((v, j) => {
       days.forEach((d, i) => {
         search.push({
@@ -117,49 +86,23 @@ module.exports = function(req, res) {
     client.msearch(searchkey).then(results => {
       let data = results.responses;
       let result = [];
-      let agg = '';
-      let item = '';
-      //todayErrorNum => 今日错误数;
-      //weekErrorNum => 7日错误数;
-      //lastFifteenErrorNum => 15日错误数;
-      //scriptErrorNum => 15日报错脚本数;
-      //local => 域名;
-      //errorType => 15日错误类型数
-      //highError => 15日最高错误类型;
       var child = {};
       data.forEach((v, i) => {
-	var keyIndex = i % 4;
-	var name = keys[keyIndex];
-        if (v.aggregations) {
-          if (keyIndex === 2) {
-            agg = v.aggregations;
-            item = Object.keys(agg)[0];
-            child[name] = v.hits.total;
-            child.local = item.split('|')[0];
-            child.type = item.split('^')[1];
-            child.errorType = v.aggregations[item].buckets.length;
-            child.highError = child.errorType > 0 ? v.aggregations[item].buckets[0].key : '';
-          } else if (keyIndex === 3) {
-            agg = v.aggregations;
-            item = Object.keys(agg)[0];
-            child[name] = v.aggregations[item].buckets.length;
-          }
-        } else {
-          child[name] = v.hits ? v.hits.total : 0;
-        }
-
-        if (keyIndex === 3 && i !== 0) {
+        var keyIndex = i % 2;
+        var name = keys[keyIndex];
+        var key = Math.floor(i / 2);
+        child.local = watchUrl[key].www;
+        child.type = watchUrl[key].type.toUpperCase();
+        child[name] = v.hits ? v.hits.total : 0;
+        if (keyIndex === 1) {
           result.push(child);
-	  child = {};
+          child = {};
         }
-      });
-      result = result.filter((item) => {
-        return item.lastFifteenErrorNum;
       });
       cache.set(key, {
         result: result,
         results: results
-      }, 1000 * 60 * 60 * 24);
+      }, 1000 * 60 * 10);
       res.status(200).json({
         code: 200,
         message: '获取成功',
